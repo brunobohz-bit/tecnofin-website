@@ -1,0 +1,83 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageContent = await getEntry('pages', 'expertise');
+if (!pageContent) throw new Error("Unable to locate expertise.md in content layer.");
+const { Content } = await render(pageContent);
+
+const capabilities = [
+  {
+    index: "01",
+    slug: "data-warehousing",
+    title: "Data Warehousing & Architecture",
+    summary: "Zero-compute-leak storage structures for Snowflake, BigQuery, and DuckDB. Layered transformation models with full cost isolation.",
+    tags: ["Snowflake", "BigQuery", "DuckDB", "dbt"],
+  },
+  {
+    index: "02",
+    slug: "data-vault",
+    title: "Data Vault Modeling",
+    summary: "Agile historical modeling using Data Vault 2.0. Hub, link, and satellite design that absorbs source changes without structural breakage.",
+    tags: ["Data Vault 2.0", "Raw Vault", "Business Vault"],
+  },
+  {
+    index: "03",
+    slug: "data-governance",
+    title: "Data Governance & Lineage",
+    summary: "Automated column-level lineage, schema contracts, and quality gates embedded directly into pipeline execution.",
+    tags: ["Lineage", "Schema Contracts", "Data Quality"],
+  },
+];
+---
+
+<BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
+  <!-- Page Header -->
+  <section class="border-b border-border-subtle py-16 bg-cream">
+    <div class="max-w-6xl mx-auto px-6">
+      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">What We Do</span>
+      <h1 class="text-3xl md:text-5xl font-serif mt-4 max-w-3xl leading-tight">
+        {pageContent.data.title}
+      </h1>
+      <div class="mt-6 prose prose-neutral max-w-2xl text-muted-gray text-base leading-relaxed">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- Capability Cards -->
+  <section class="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-0">
+    {capabilities.map((cap) => (
+      <a
+        href={`/expertise/${cap.slug}`}
+        class="group border-t border-border-subtle py-10 grid grid-cols-1 md:grid-cols-12 gap-8 hover:bg-ink/[0.02] transition-colors -mx-6 px-6"
+      >
+        <!-- Index -->
+        <div class="md:col-span-1 pt-1">
+          <span class="text-2xl font-serif text-border-subtle font-medium">{cap.index}</span>
+        </div>
+
+        <!-- Title + Summary -->
+        <div class="md:col-span-7">
+          <h2 class="text-xl md:text-2xl font-serif text-ink group-hover:underline underline-offset-4 decoration-1 leading-snug mb-3">
+            {cap.title}
+          </h2>
+          <p class="text-sm text-muted-gray leading-relaxed max-w-xl">{cap.summary}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {cap.tags.map((tag) => (
+              <span class="text-xs border border-border-subtle px-2 py-1 text-muted-gray">{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="md:col-span-4 flex items-start justify-end pt-1">
+          <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray group-hover:text-ink transition-colors">
+            View Capability →
+          </span>
+        </div>
+      </a>
+    ))}
+    <div class="border-t border-border-subtle"></div>
+  </section>
+</BaseLayout>

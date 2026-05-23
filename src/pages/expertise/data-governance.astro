@@ -1,0 +1,59 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageContent = await getEntry('pages', 'expertise-governance');
+if (!pageContent) throw new Error("Unable to locate expertise-governance.md in content layer.");
+const { Content } = await render(pageContent);
+---
+
+<BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
+  <!-- Breadcrumb -->
+  <div class="border-b border-border-subtle bg-cream">
+    <div class="max-w-6xl mx-auto px-6 py-4">
+      <a href="/expertise" class="text-xs uppercase tracking-widest font-semibold text-muted-gray hover:text-ink transition-colors">
+        ← Back to Expertise
+      </a>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <section class="border-b border-border-subtle py-16 bg-cream">
+    <div class="max-w-6xl mx-auto px-6">
+      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Capability 03</span>
+      <h1 class="text-3xl md:text-5xl font-serif mt-4 max-w-3xl leading-tight">
+        {pageContent.data.title}
+      </h1>
+      <p class="mt-4 text-lg font-serif italic text-muted-gray max-w-2xl leading-relaxed">
+        {pageContent.data.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+    <div class="md:col-span-8 prose prose-neutral max-w-none prose-headings:font-serif prose-headings:font-medium prose-h3:text-xl prose-h3:border-b prose-h3:border-border-subtle prose-h3:pb-2 text-muted-gray leading-relaxed">
+      <Content />
+    </div>
+
+    <!-- Sidebar CTA -->
+    <aside class="md:col-span-4">
+      <div class="sticky top-24 border border-border-subtle p-6 flex flex-col gap-4">
+        <p class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Start a Conversation</p>
+        <p class="text-sm text-muted-gray leading-relaxed">
+          Need auditable lineage, schema contracts, or compliance-ready pipelines? Let's review your current gaps.
+        </p>
+        <a href="/contact" class="bg-ink text-white text-xs uppercase tracking-widest font-semibold py-3 px-4 text-center hover:bg-muted-gray transition-colors">
+          Request an Audit →
+        </a>
+        <div class="border-t border-border-subtle pt-4 mt-2">
+          <p class="text-xs text-muted-gray uppercase tracking-widest font-semibold mb-2">Other Capabilities</p>
+          <div class="flex flex-col gap-2 text-sm">
+            <a href="/expertise/data-warehousing" class="text-muted-gray hover:text-ink transition-colors">Data Warehousing & Architecture →</a>
+            <a href="/expertise/data-vault" class="text-muted-gray hover:text-ink transition-colors">Data Vault Modeling →</a>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>

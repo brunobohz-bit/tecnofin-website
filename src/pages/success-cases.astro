@@ -1,0 +1,88 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pageContent = await getEntry('pages', 'success-cases');
+if (!pageContent) {
+  throw new Error("Unable to locate success-cases.md in content layer.");
+}
+const { Content } = await render(pageContent);
+
+const cases = [
+  {
+    index: "01",
+    client: "Financial Services Firm",
+    industry: "Finance",
+    challenge: "Legacy data warehouse generating 6-hour reporting delays, blocking daily operations.",
+    result: "Reduced reporting latency by 94%, from 6 hours to under 20 minutes.",
+    tags: ["Data Warehouse", "BigQuery", "dbt"],
+  },
+  {
+    index: "02",
+    client: "Retail Group",
+    industry: "Retail",
+    challenge: "Fragmented data sources across 12 disconnected systems with no unified view.",
+    result: "Delivered a single Data Vault 2.0 model with 100% source traceability.",
+    tags: ["Data Vault 2.0", "Snowflake", "Pipeline Engineering"],
+  },
+  {
+    index: "03",
+    client: "Healthcare Provider",
+    industry: "Healthcare",
+    challenge: "Zero data lineage or compliance documentation across 200+ production tables.",
+    result: "Full automated lineage coverage deployed in 8 weeks, meeting regulatory requirements.",
+    tags: ["Data Governance", "Lineage", "Compliance"],
+  },
+];
+---
+
+<BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
+  <!-- Page Header -->
+  <section class="border-b border-border-subtle py-16 bg-cream">
+    <div class="max-w-6xl mx-auto px-6">
+      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Our Track Record</span>
+      <h1 class="text-3xl md:text-5xl font-serif mt-4 max-w-3xl leading-tight">
+        {pageContent.data.title}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="max-w-6xl mx-auto px-6 pt-12 pb-4">
+    <div class="prose prose-neutral max-w-2xl text-muted-gray text-base leading-relaxed">
+      <Content />
+    </div>
+  </section>
+
+  <!-- Case Cards -->
+  <section class="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-0">
+    {cases.map((c) => (
+      <article class="border-t border-border-subtle py-10 grid grid-cols-1 md:grid-cols-12 gap-8">
+        <!-- Index + Meta -->
+        <div class="md:col-span-3">
+          <span class="text-4xl font-serif text-border-subtle font-medium">{c.index}</span>
+          <p class="mt-4 text-xs uppercase tracking-widest font-semibold text-muted-gray">{c.industry}</p>
+          <p class="mt-1 text-sm font-medium text-ink">{c.client}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {c.tags.map((tag) => (
+              <span class="text-xs border border-border-subtle px-2 py-1 text-muted-gray">{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Challenge -->
+        <div class="md:col-span-4 border-l border-border-subtle pl-8">
+          <p class="text-xs uppercase tracking-widest font-semibold text-muted-gray mb-3">Challenge</p>
+          <p class="text-sm text-muted-gray leading-relaxed">{c.challenge}</p>
+        </div>
+
+        <!-- Result -->
+        <div class="md:col-span-5 border-l border-border-subtle pl-8">
+          <p class="text-xs uppercase tracking-widest font-semibold text-muted-gray mb-3">Outcome</p>
+          <p class="text-base font-serif text-ink leading-snug">{c.result}</p>
+        </div>
+      </article>
+    ))}
+    <div class="border-t border-border-subtle"></div>
+  </section>
+</BaseLayout>

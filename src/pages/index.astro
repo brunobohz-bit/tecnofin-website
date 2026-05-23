@@ -1,0 +1,35 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const homeContent = await getEntry('pages', 'home');
+if (!homeContent) {
+  throw new Error("Unable to locate home.md in content layer.");
+}
+const { Content } = await render(homeContent);
+---
+
+<BaseLayout title={homeContent.data.title} description={homeContent.data.description}>
+  <!-- Hero Layer -->
+  <section class="border-b border-border-subtle py-24 md:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <h1 class="text-4xl md:text-6xl font-serif max-w-4xl tracking-tight leading-[1.1] mb-8">
+        We build bulletproof pipeline infrastructure for enterprise data teams.
+      </h1>
+      <p class="text-lg md:text-xl text-muted-gray font-serif italic max-w-2xl leading-relaxed">
+        {homeContent.data.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Editorial Split Content Area -->
+  <section class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+    <div class="md:col-span-4 border-l-2 border-ink pl-4 py-2">
+      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Architectural Focus</span>
+      <h2 class="text-2xl font-serif mt-2">Zero Drift Platforms</h2>
+    </div>
+    <div class="md:col-span-8 prose prose-neutral max-w-none text-muted-gray leading-relaxed text-base">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>

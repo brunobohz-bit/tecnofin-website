@@ -1,0 +1,52 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactContent = await getEntry('pages', 'contact');
+if (!contactContent) {
+  throw new Error("Unable to locate contact.md in content layer.");
+}
+const { Content } = await render(contactContent);
+---
+
+<BaseLayout title={contactContent.data.title} description={contactContent.data.description}>
+  <section class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+    <!-- Context Panel -->
+    <div class="md:col-span-5">
+      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Connect</span>
+      <h1 class="text-3xl md:text-4xl font-serif mt-4 mb-6 leading-tight">
+        {contactContent.data.title}
+      </h1>
+      <div class="prose prose-neutral text-muted-gray text-sm leading-relaxed mb-8">
+        <Content />
+      </div>
+      <div class="border-t border-border-subtle pt-6 text-xs text-muted-gray">
+        <strong>Expected Response Frame:</strong> All messages are reviewed directly by technical engineering partners. Expect a response window of 1 business day.
+      </div>
+    </div>
+
+    <!-- Contact Form Container -->
+    <div class="md:col-span-7 bg-white border border-border-subtle p-8 md:p-10 shadow-sm rounded-sm">
+      <form action="https://formspree.io/f/placeholder-id" method="POST" class="flex flex-col gap-6">
+        <div>
+          <label for="name" class="block text-xs uppercase tracking-wider font-semibold text-muted-gray mb-2">Corporate Contact Name</label>
+          <input type="text" id="name" name="name" required class="w-full bg-cream border border-border-subtle px-4 py-3 text-sm focus:outline-none focus:border-ink transition-colors" />
+        </div>
+
+        <div>
+          <label for="email" class="block text-xs uppercase tracking-wider font-semibold text-muted-gray mb-2">Work Email Address</label>
+          <input type="email" id="email" name="email" required class="w-full bg-cream border border-border-subtle px-4 py-3 text-sm focus:outline-none focus:border-ink transition-colors" />
+        </div>
+
+        <div>
+          <label for="message" class="block text-xs uppercase tracking-wider font-semibold text-muted-gray mb-2">Scope of Operations / Infrastructure Hurdles</label>
+          <textarea id="message" name="message" rows="5" required class="w-full bg-cream border border-border-subtle p-4 text-sm focus:outline-none focus:border-ink transition-colors resize-none"></textarea>
+        </div>
+
+        <button type="submit" class="bg-ink text-white font-medium text-sm py-4 hover:bg-muted-gray transition-colors tracking-wide cursor-pointer">
+          Submit Form For Review
+        </button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

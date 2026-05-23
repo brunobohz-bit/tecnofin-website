@@ -1,0 +1,29 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const dnaContent = await getEntry('pages', 'dna');
+if (!dnaContent) {
+  throw new Error("Unable to locate dna.md in content layer.");
+}
+const { Content } = await render(dnaContent);
+---
+
+<BaseLayout title={dnaContent.data.title} description={dnaContent.data.description}>
+  <!-- Top Intro Layer -->
+  <section class="border-b border-border-subtle py-20 bg-cream">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Corporate Values</span>
+      <h1 class="text-3xl md:text-5xl font-serif mt-4 max-w-3xl mx-auto leading-tight">
+        {dnaContent.data.title}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Editorial Content Body -->
+  <section class="max-w-3xl mx-auto px-6 py-16">
+    <div class="prose prose-neutral max-w-none prose-headings:font-serif prose-headings:mt-8 prose-h3:text-xl text-muted-gray leading-relaxed">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>

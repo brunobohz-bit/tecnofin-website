@@ -3,34 +3,178 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-serif: "Newsreader", "Merriweather", Georgia, serif;
+  /* Type families */
+  --font-display: "Instrument Serif", "Newsreader", Georgia, serif;
+  --font-serif: "Newsreader", Georgia, serif;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-cream: #FAF9F6;
-  --color-ink: #111111;
-  --color-border-subtle: #E5E5E0;
-  --color-muted-gray: #666666;
+  /* Documentary Modern palette */
+  --color-paper: #F5EFE3;
+  --color-paper-deep: #EDE5D3;
+  --color-paper-warm: #FBF7EE;
+  --color-ink: #1A1612;
+  --color-ink-soft: #2A2520;
+  --color-oxblood: #ddab4a;
+  --color-oxblood-deep: #b88828;
+  --color-oxblood-soft: #e8c06e;
+  --color-rule: #D9CFB9;
+  --color-rule-soft: #E6DEC9;
+  --color-muted: #6E6357;
+  --color-muted-soft: #8A7F71;
+
+  /* Legacy aliases retained so existing class names keep working */
+  --color-cream: #F5EFE3;
+  --color-border-subtle: #D9CFB9;
+  --color-muted-gray: #6E6357;
 }
 
 @layer base {
   body {
-    background-color: var(--color-cream);
+    background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     font-weight: 500;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.018em;
+    color: var(--color-ink);
+  }
+
+  ::selection {
+    background: var(--color-oxblood);
+    color: var(--color-ink);
   }
 }
 
-/* Custom Editorial Borders and Accent Lines */
-.editorial-grid {
-  background-image:
-    linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
-  background-size: 40px 40px;
+@layer components {
+  /* Editorial eyebrow label — uppercase + mono index */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+
+  .eyebrow-oxblood {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-oxblood);
+    font-weight: 500;
+  }
+
+  /* Display headline — used once per page */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+  }
+
+  /* Mono index number used in card rails */
+  .index-number {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--color-oxblood);
+    letter-spacing: 0;
+  }
+
+  /* Pill button */
+  .btn-oxblood {
+    background-color: var(--color-oxblood);
+    color: var(--color-paper-warm);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    padding: 0.625rem 1.125rem;
+    border-radius: 999px;
+    transition: background-color 200ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-oxblood:hover {
+    background-color: var(--color-oxblood-deep);
+  }
+
+  .btn-ghost {
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    padding: 0.625rem 1.125rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 999px;
+    transition: border-color 200ms ease, color 200ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-oxblood);
+    color: var(--color-oxblood);
+  }
+
+  /* Tech-stack chip — mono, monochrome, subtle */
+  .stack-chip {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--color-rule);
+    color: var(--color-ink-soft);
+    background-color: var(--color-paper-warm);
+  }
+
+  /* Subtle status pill (e.g., "Booking Q3 2026") */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 999px;
+    background-color: var(--color-paper-warm);
+  }
+  .status-pill::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background-color: var(--color-oxblood);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-oxblood) 18%, transparent);
+  }
+
+  /* Paper grain — subtle warm noise */
+  .paper-grain {
+    background-color: var(--color-paper);
+    background-image:
+      radial-gradient(color-mix(in srgb, var(--color-ink) 3%, transparent) 1px, transparent 1px),
+      radial-gradient(color-mix(in srgb, var(--color-oxblood) 3%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px, 31px 31px;
+    background-position: 0 0, 11px 11px;
+  }
+
+  /* Oxblood rule used as a section accent under eyebrows */
+  .rule-oxblood {
+    width: 2.25rem;
+    height: 2px;
+    background-color: var(--color-oxblood);
+    display: block;
+  }
 }

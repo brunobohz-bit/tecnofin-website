@@ -6,6 +6,19 @@ interface Props {
 
 const { title, description } = Astro.props;
 import '../styles/global.css';
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(href + '/');
+};
+
+const nav = [
+  { href: '/expertise', label: 'Expertise' },
+  { href: '/dna', label: 'DNA' },
+  { href: '/success-cases', label: 'Success Cases' },
+  { href: '/contact', label: 'Contact' },
+];
 ---
 
 <!doctype html>
@@ -16,24 +29,37 @@ import '../styles/global.css';
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | Tecnofin</title>
-    <!-- Premium Google Fonts Load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen flex flex-col">
-    <!-- Header Navigation -->
-    <header class="border-b border-border-subtle bg-cream/80 backdrop-blur sticky top-0 z-50">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="/" class="flex items-center">
+    <!-- Header -->
+    <header class="border-b border-rule bg-paper/85 backdrop-blur sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
+        <a href="/" class="flex items-center gap-3">
           <img src="/logo.png" alt="Tecnofin" class="h-9 w-auto" />
         </a>
-        <nav class="flex gap-8 text-sm font-medium text-muted-gray">
-          <a href="/expertise" class="hover:text-ink transition-colors">Expertise</a>
-          <a href="/dna" class="hover:text-ink transition-colors">DNA</a>
-          <a href="/success-cases" class="hover:text-ink transition-colors">Success Cases</a>
-          <a href="/contact" class="hover:text-ink transition-colors">Contact</a>
+        <nav class="hidden md:flex items-center gap-9 text-[13px] font-medium">
+          {nav.map((item) => (
+            <a
+              href={item.href}
+              class={`relative transition-colors ${isActive(item.href) ? 'text-ink' : 'text-muted hover:text-ink'}`}
+            >
+              {item.label}
+              {isActive(item.href) && (
+                <span class="absolute -bottom-[26px] left-0 right-0 h-[2px] bg-oxblood"></span>
+              )}
+            </a>
+          ))}
         </nav>
+        <div class="flex items-center gap-3">
+          <span class="status-pill hidden lg:inline-flex">Booking Q3 2026</span>
+          <a href="/contact" class="btn-oxblood">
+            Start a project
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
     </header>
 
@@ -43,15 +69,64 @@ import '../styles/global.css';
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-border-subtle bg-cream py-12">
-      <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-gray gap-4">
-        <div>
-          &copy; {new Date().getFullYear()} Tecnofin. All rights reserved.
+    <footer class="border-t border-rule bg-paper-deep/40 mt-24">
+      <!-- Sign-off line -->
+      <div class="max-w-6xl mx-auto px-6 pt-20 pb-16">
+        <p class="display text-4xl md:text-6xl text-ink max-w-4xl leading-[1.02]">
+          Built for teams that treat data as <em class="italic text-oxblood">infrastructure</em>, not output.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a href="/contact" class="btn-oxblood">
+            Request an engagement
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="mailto:hello@tecnofin.io" class="btn-ghost">hello@tecnofin.io</a>
         </div>
-        <div class="flex gap-6">
-          <a href="/expertise" class="hover:underline">Capabilities</a>
-          <a href="/dna" class="hover:underline">Philosophy</a>
-          <a href="/contact" class="hover:underline">Contact</a>
+      </div>
+
+      <!-- Structured columns -->
+      <div class="border-t border-rule">
+        <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-12 gap-8 text-sm">
+          <div class="col-span-2 md:col-span-4">
+            <img src="/logo.png" alt="Tecnofin" class="h-8 w-auto mb-4 opacity-90" />
+            <p class="text-muted text-[13px] leading-relaxed max-w-xs">
+              Pipeline infrastructure and Data Vault engineering for enterprise analytics teams.
+            </p>
+          </div>
+          <div class="md:col-span-3">
+            <p class="eyebrow mb-4">Capabilities</p>
+            <ul class="flex flex-col gap-2 text-ink-soft">
+              <li><a href="/expertise/data-warehousing" class="hover:text-oxblood transition-colors">Data Warehousing</a></li>
+              <li><a href="/expertise/data-vault" class="hover:text-oxblood transition-colors">Data Vault Modeling</a></li>
+              <li><a href="/expertise/data-governance" class="hover:text-oxblood transition-colors">Governance & Lineage</a></li>
+            </ul>
+          </div>
+          <div class="md:col-span-3">
+            <p class="eyebrow mb-4">Firm</p>
+            <ul class="flex flex-col gap-2 text-ink-soft">
+              <li><a href="/dna" class="hover:text-oxblood transition-colors">DNA & Philosophy</a></li>
+              <li><a href="/success-cases" class="hover:text-oxblood transition-colors">Success Cases</a></li>
+              <li><a href="/contact" class="hover:text-oxblood transition-colors">Contact</a></li>
+            </ul>
+          </div>
+          <div class="md:col-span-2">
+            <p class="eyebrow mb-4">Stack</p>
+            <ul class="flex flex-col gap-2 text-ink-soft font-mono text-[12px]">
+              <li>Snowflake</li>
+              <li>BigQuery</li>
+              <li>dbt · DuckDB</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colophon -->
+      <div class="border-t border-rule">
+        <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-[11px] font-mono uppercase tracking-widest text-muted">
+          <div>&copy; {new Date().getFullYear()} Tecnofin · All rights reserved</div>
+          <div class="flex gap-6">
+            <span>Made for engineering teams</span>
+          </div>
         </div>
       </div>
     </footer>

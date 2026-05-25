@@ -7,29 +7,189 @@ if (!homeContent) {
   throw new Error("Unable to locate home.md in content layer.");
 }
 const { Content } = await render(homeContent);
+
+const metrics = [
+  { value: "94%", label: "Average reporting-latency reduction" },
+  { value: "2.0", label: "Data Vault discipline, end-to-end" },
+  { value: "100%", label: "Column-level lineage coverage" },
+  { value: "0", label: "Pipeline-driven incidents post-handover" },
+];
+
+const principles = [
+  {
+    index: "I.",
+    title: "Pipelines are software",
+    body: "Tested, peer-reviewed, version-controlled. Not glue, not notebooks, not screenshots of dashboards.",
+  },
+  {
+    index: "II.",
+    title: "Schema is contract",
+    body: "Sources drift. We absorb that drift in the model so downstream consumers never see a broken interface.",
+  },
+  {
+    index: "III.",
+    title: "Lineage is non-negotiable",
+    body: "Every column in production answers three questions: where it came from, how it was derived, who depends on it.",
+  },
+];
 ---
 
 <BaseLayout title={homeContent.data.title} description={homeContent.data.description}>
-  <!-- Hero Layer -->
-  <section class="border-b border-border-subtle py-24 md:py-32">
-    <div class="max-w-6xl mx-auto px-6">
-      <h1 class="text-4xl md:text-6xl font-serif max-w-4xl tracking-tight leading-[1.1] mb-8">
-        We build bulletproof pipeline infrastructure for enterprise data teams.
-      </h1>
-      <p class="text-lg md:text-xl text-muted-gray font-serif italic max-w-2xl leading-relaxed">
-        {homeContent.data.description}
-      </p>
+  <!-- HERO -->
+  <section class="relative overflow-hidden border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+      <!-- Headline column -->
+      <div class="lg:col-span-7">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="rule-oxblood"></span>
+          <span class="eyebrow-oxblood">Enterprise Data Infrastructure · Est. 2018</span>
+        </div>
+        <h1 class="display text-[2.75rem] sm:text-6xl lg:text-[5.25rem] text-ink leading-[0.98] tracking-tight">
+          We build <em class="italic text-oxblood">bulletproof</em> pipeline infrastructure for data teams that can't afford to break.
+        </h1>
+        <p class="mt-10 max-w-xl text-[1.0625rem] leading-relaxed text-ink-soft font-serif">
+          {homeContent.data.description}
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a href="/contact" class="btn-oxblood">
+            Request an engagement
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="/expertise" class="btn-ghost">
+            See what we do
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Signature visual: stylized lineage graph -->
+      <div class="lg:col-span-5 relative">
+        <div class="absolute inset-0 -z-0 paper-grain opacity-50 rounded-sm"></div>
+        <svg viewBox="0 0 420 360" class="relative w-full h-auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#D9CFB9" stroke-width="0.5" opacity="0.55"/>
+            </pattern>
+          </defs>
+          <rect width="420" height="360" fill="url(#grid)" />
+
+          <!-- Edges: sources → vault → marts -->
+          <g fill="none" stroke="#ddab4a" stroke-width="1.25" opacity="0.75">
+            <path d="M 60 60 C 150 60, 150 180, 220 180" />
+            <path d="M 60 130 C 150 130, 150 180, 220 180" />
+            <path d="M 60 200 C 150 200, 150 180, 220 180" />
+            <path d="M 60 270 C 150 270, 150 180, 220 180" />
+            <path d="M 280 180 C 330 180, 330 90, 380 90" />
+            <path d="M 280 180 C 330 180, 330 180, 380 180" />
+            <path d="M 280 180 C 330 180, 330 270, 380 270" />
+          </g>
+
+          <!-- Source nodes (left column) -->
+          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">
+            <g>
+              <rect x="20" y="48" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="60" y="63" text-anchor="middle">SOURCE_01</text>
+            </g>
+            <g>
+              <rect x="20" y="118" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="60" y="133" text-anchor="middle">SOURCE_02</text>
+            </g>
+            <g>
+              <rect x="20" y="188" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="60" y="203" text-anchor="middle">SOURCE_03</text>
+            </g>
+            <g>
+              <rect x="20" y="258" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="60" y="273" text-anchor="middle">SOURCE_04</text>
+            </g>
+          </g>
+
+          <!-- Vault hub (center) -->
+          <g>
+            <rect x="220" y="160" width="60" height="40" fill="#ddab4a" stroke="#b88828" stroke-width="0.75"/>
+            <text x="250" y="178" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">DATA</text>
+            <text x="250" y="190" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">VAULT</text>
+          </g>
+
+          <!-- Output marts (right column) -->
+          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">
+            <g>
+              <rect x="340" y="78" width="70" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="375" y="93" text-anchor="middle">MART · BI</text>
+            </g>
+            <g>
+              <rect x="340" y="168" width="70" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="375" y="183" text-anchor="middle">MART · ML</text>
+            </g>
+            <g>
+              <rect x="340" y="258" width="70" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <text x="375" y="273" text-anchor="middle">MART · OPS</text>
+            </g>
+          </g>
+
+          <!-- Legend strip -->
+          <g font-family="JetBrains Mono, monospace" font-size="7" fill="#6E6357" letter-spacing="1.2">
+            <text x="20" y="335">FIG. 01 — REFERENCE PIPELINE ARCHITECTURE</text>
+            <text x="20" y="348">SOURCES → RAW VAULT → BUSINESS MARTS</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Metric strip -->
+    <div class="border-t border-rule bg-paper-deep/30">
+      <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 divide-x divide-rule">
+        {metrics.map((m) => (
+          <div class="px-6 py-8 first:pl-0 md:px-8 md:py-10">
+            <div class="display text-4xl md:text-5xl text-oxblood leading-none">{m.value}</div>
+            <p class="mt-3 text-[12px] uppercase tracking-widest font-mono text-muted leading-snug">{m.label}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
-  <!-- Editorial Split Content Area -->
-  <section class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
-    <div class="md:col-span-4 border-l-2 border-ink pl-4 py-2">
-      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Architectural Focus</span>
-      <h2 class="text-2xl font-serif mt-2">Zero Drift Platforms</h2>
+  <!-- EDITORIAL SPLIT — Architectural focus -->
+  <section class="max-w-6xl mx-auto px-6 py-24 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-12">
+    <div class="md:col-span-4">
+      <span class="eyebrow-oxblood">§ Architectural Focus</span>
+      <h2 class="display text-4xl md:text-5xl mt-4 leading-[1.05]">
+        Zero-drift platforms.
+      </h2>
+      <span class="rule-oxblood mt-6"></span>
     </div>
-    <div class="md:col-span-8 prose prose-neutral max-w-none text-muted-gray leading-relaxed text-base">
-      <Content />
+    <div class="md:col-span-8">
+      <div class="prose prose-neutral max-w-none text-ink-soft leading-relaxed text-[1.0625rem] prose-p:font-serif
+                  prose-p:first-of-type:first-letter:font-display
+                  prose-p:first-of-type:first-letter:text-[3.75rem]
+                  prose-p:first-of-type:first-letter:float-left
+                  prose-p:first-of-type:first-letter:mr-3
+                  prose-p:first-of-type:first-letter:leading-[0.85]
+                  prose-p:first-of-type:first-letter:text-oxblood
+                  prose-headings:font-serif prose-headings:text-ink prose-headings:mt-8">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES — three columns -->
+  <section class="border-t border-rule">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <div class="max-w-3xl mb-16">
+        <span class="eyebrow-oxblood">§ Operating Principles</span>
+        <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
+          Three rules we will not compromise on.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-rule">
+        {principles.map((p) => (
+          <article class="bg-paper p-8 md:p-10 flex flex-col gap-4 min-h-[260px]">
+            <div class="index-number text-2xl">{p.index}</div>
+            <h3 class="font-serif text-2xl leading-snug text-ink">{p.title}</h3>
+            <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif mt-auto">{p.body}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>

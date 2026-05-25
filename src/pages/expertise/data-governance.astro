@@ -5,52 +5,66 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const pageContent = await getEntry('pages', 'expertise-governance');
 if (!pageContent) throw new Error("Unable to locate expertise-governance.md in content layer.");
 const { Content } = await render(pageContent);
+
+const capIndex = "03";
+const ctaCopy = "Need column-level lineage, audit-ready documentation, or quality gates baked into your pipelines? Let's scope the work.";
+const others = [
+  { href: "/expertise/data-warehousing", label: "Data Warehousing & Architecture" },
+  { href: "/expertise/data-vault", label: "Data Vault Modeling" },
+];
 ---
 
 <BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
-  <!-- Breadcrumb -->
-  <div class="border-b border-border-subtle bg-cream">
+  <div class="border-b border-rule">
     <div class="max-w-6xl mx-auto px-6 py-4">
-      <a href="/expertise" class="text-xs uppercase tracking-widest font-semibold text-muted-gray hover:text-ink transition-colors">
-        ← Back to Expertise
+      <a href="/expertise" class="eyebrow hover:text-oxblood transition-colors inline-flex items-center gap-2">
+        <span aria-hidden="true">←</span> Back to Expertise
       </a>
     </div>
   </div>
 
-  <!-- Page Header -->
-  <section class="border-b border-border-subtle py-16 bg-cream">
-    <div class="max-w-6xl mx-auto px-6">
-      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Capability 03</span>
-      <h1 class="text-3xl md:text-5xl font-serif mt-4 max-w-3xl leading-tight">
+  <section class="border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 pt-20 pb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="index-number text-lg">{capIndex}</span>
+        <span class="rule-oxblood"></span>
+        <span class="eyebrow-oxblood">§ Capability</span>
+      </div>
+      <h1 class="display text-5xl md:text-7xl max-w-4xl leading-[0.98]">
         {pageContent.data.title}
       </h1>
-      <p class="mt-4 text-lg font-serif italic text-muted-gray max-w-2xl leading-relaxed">
+      <p class="mt-8 text-xl font-serif italic text-ink-soft max-w-2xl leading-relaxed">
         {pageContent.data.description}
       </p>
     </div>
   </section>
 
-  <!-- Content -->
-  <section class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
-    <div class="md:col-span-8 prose prose-neutral max-w-none prose-headings:font-serif prose-headings:font-medium prose-h3:text-xl prose-h3:border-b prose-h3:border-border-subtle prose-h3:pb-2 text-muted-gray leading-relaxed">
+  <section class="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-12 gap-16">
+    <div class="md:col-span-8 prose prose-neutral max-w-none text-ink-soft text-[1.0625rem] leading-relaxed font-serif
+                prose-headings:font-serif prose-headings:font-medium prose-headings:text-ink prose-headings:mt-10
+                prose-h3:text-2xl prose-h3:relative prose-h3:pl-5
+                prose-h3:before:content-[''] prose-h3:before:absolute prose-h3:before:left-0 prose-h3:before:top-2 prose-h3:before:bottom-2 prose-h3:before:w-[2px] prose-h3:before:bg-oxblood
+                prose-strong:text-ink prose-em:text-oxblood
+                prose-a:text-oxblood prose-a:no-underline hover:prose-a:underline">
       <Content />
     </div>
 
-    <!-- Sidebar CTA -->
     <aside class="md:col-span-4">
-      <div class="sticky top-24 border border-border-subtle p-6 flex flex-col gap-4">
-        <p class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Start a Conversation</p>
-        <p class="text-sm text-muted-gray leading-relaxed">
-          Need auditable lineage, schema contracts, or compliance-ready pipelines? Let's review your current gaps.
-        </p>
-        <a href="/contact" class="bg-ink text-white text-xs uppercase tracking-widest font-semibold py-3 px-4 text-center hover:bg-muted-gray transition-colors">
-          Request an Audit →
+      <div class="sticky top-28 border border-rule bg-paper-warm p-7 flex flex-col gap-5">
+        <span class="eyebrow-oxblood">Start a conversation</span>
+        <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif">{ctaCopy}</p>
+        <a href="/contact" class="btn-oxblood self-start">
+          Request an audit
+          <span aria-hidden="true">→</span>
         </a>
-        <div class="border-t border-border-subtle pt-4 mt-2">
-          <p class="text-xs text-muted-gray uppercase tracking-widest font-semibold mb-2">Other Capabilities</p>
-          <div class="flex flex-col gap-2 text-sm">
-            <a href="/expertise/data-warehousing" class="text-muted-gray hover:text-ink transition-colors">Data Warehousing & Architecture →</a>
-            <a href="/expertise/data-vault" class="text-muted-gray hover:text-ink transition-colors">Data Vault Modeling →</a>
+        <div class="border-t border-rule pt-5 mt-2">
+          <p class="eyebrow mb-3">Other capabilities</p>
+          <div class="flex flex-col gap-2">
+            {others.map((o) => (
+              <a href={o.href} class="font-serif text-[15px] text-ink-soft hover:text-oxblood transition-colors inline-flex items-center gap-2">
+                {o.label} <span aria-hidden="true">→</span>
+              </a>
+            ))}
           </div>
         </div>
       </div>

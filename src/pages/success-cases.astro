@@ -14,7 +14,9 @@ const cases = [
     client: "Financial Services Firm",
     industry: "Finance",
     challenge: "Legacy data warehouse generating 6-hour reporting delays, blocking daily operations.",
-    result: "Reduced reporting latency by 94%, from 6 hours to under 20 minutes.",
+    metric: "94%",
+    metricLabel: "Reporting latency reduction",
+    result: "From 6 hours to under 20 minutes — daily ops unblocked.",
     tags: ["Data Warehouse", "BigQuery", "dbt"],
   },
   {
@@ -22,7 +24,9 @@ const cases = [
     client: "Retail Group",
     industry: "Retail",
     challenge: "Fragmented data sources across 12 disconnected systems with no unified view.",
-    result: "Delivered a single Data Vault 2.0 model with 100% source traceability.",
+    metric: "12 → 1",
+    metricLabel: "Source systems unified",
+    result: "Single Data Vault 2.0 model with 100% source traceability.",
     tags: ["Data Vault 2.0", "Snowflake", "Pipeline Engineering"],
   },
   {
@@ -30,7 +34,9 @@ const cases = [
     client: "Healthcare Provider",
     industry: "Healthcare",
     challenge: "Zero data lineage or compliance documentation across 200+ production tables.",
-    result: "Full automated lineage coverage deployed in 8 weeks, meeting regulatory requirements.",
+    metric: "8 wks",
+    metricLabel: "To full lineage coverage",
+    result: "Automated column-level lineage across 200+ tables, meeting regulatory requirements.",
     tags: ["Data Governance", "Lineage", "Compliance"],
   },
 ];
@@ -38,51 +44,51 @@ const cases = [
 
 <BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
   <!-- Page Header -->
-  <section class="border-b border-border-subtle py-16 bg-cream">
-    <div class="max-w-6xl mx-auto px-6">
-      <span class="text-xs uppercase tracking-widest font-semibold text-muted-gray">Our Track Record</span>
-      <h1 class="text-3xl md:text-5xl font-serif mt-4 max-w-3xl leading-tight">
+  <section class="border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 pt-24 pb-20">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="rule-oxblood"></span>
+        <span class="eyebrow-oxblood">§ Our track record</span>
+      </div>
+      <h1 class="display text-5xl md:text-7xl max-w-4xl leading-[0.98]">
         {pageContent.data.title}
       </h1>
-    </div>
-  </section>
-
-  <!-- Intro -->
-  <section class="max-w-6xl mx-auto px-6 pt-12 pb-4">
-    <div class="prose prose-neutral max-w-2xl text-muted-gray text-base leading-relaxed">
-      <Content />
+      <div class="mt-10 prose prose-neutral max-w-2xl text-ink-soft text-[1.0625rem] leading-relaxed font-serif">
+        <Content />
+      </div>
     </div>
   </section>
 
   <!-- Case Cards -->
-  <section class="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-0">
+  <section class="max-w-6xl mx-auto px-6">
     {cases.map((c) => (
-      <article class="border-t border-border-subtle py-10 grid grid-cols-1 md:grid-cols-12 gap-8">
+      <article class="border-b border-rule py-16 grid grid-cols-1 md:grid-cols-12 gap-10">
         <!-- Index + Meta -->
         <div class="md:col-span-3">
-          <span class="text-4xl font-serif text-border-subtle font-medium">{c.index}</span>
-          <p class="mt-4 text-xs uppercase tracking-widest font-semibold text-muted-gray">{c.industry}</p>
-          <p class="mt-1 text-sm font-medium text-ink">{c.client}</p>
-          <div class="mt-4 flex flex-wrap gap-2">
+          <span class="index-number text-4xl">{c.index}</span>
+          <p class="eyebrow mt-6">{c.industry}</p>
+          <p class="mt-2 font-serif text-lg text-ink leading-snug">{c.client}</p>
+          <div class="mt-5 flex flex-wrap gap-2">
             {c.tags.map((tag) => (
-              <span class="text-xs border border-border-subtle px-2 py-1 text-muted-gray">{tag}</span>
+              <span class="stack-chip">{tag}</span>
             ))}
           </div>
         </div>
 
         <!-- Challenge -->
-        <div class="md:col-span-4 border-l border-border-subtle pl-8">
-          <p class="text-xs uppercase tracking-widest font-semibold text-muted-gray mb-3">Challenge</p>
-          <p class="text-sm text-muted-gray leading-relaxed">{c.challenge}</p>
+        <div class="md:col-span-4">
+          <p class="eyebrow mb-4">Challenge</p>
+          <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{c.challenge}</p>
         </div>
 
-        <!-- Result -->
-        <div class="md:col-span-5 border-l border-border-subtle pl-8">
-          <p class="text-xs uppercase tracking-widest font-semibold text-muted-gray mb-3">Outcome</p>
-          <p class="text-base font-serif text-ink leading-snug">{c.result}</p>
+        <!-- Result with big metric -->
+        <div class="md:col-span-5 md:border-l md:border-rule md:pl-10">
+          <p class="eyebrow-oxblood mb-4">Outcome</p>
+          <div class="display text-6xl md:text-7xl text-oxblood leading-none">{c.metric}</div>
+          <p class="mt-2 text-[11px] uppercase tracking-widest font-mono text-muted">{c.metricLabel}</p>
+          <p class="mt-6 font-serif text-lg text-ink leading-snug">{c.result}</p>
         </div>
       </article>
     ))}
-    <div class="border-t border-border-subtle"></div>
   </section>
 </BaseLayout>

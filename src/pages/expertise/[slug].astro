@@ -1,20 +1,26 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const pageContent = await getEntry('pages', 'expertise-vault');
-if (!pageContent) throw new Error("Unable to locate expertise-vault.md in content layer.");
-const { Content } = await render(pageContent);
+export async function getStaticPaths() {
+  const expertise = await getCollection('expertise');
+  return expertise.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
 
-const capIndex = "02";
-const ctaCopy = "Dealing with volatile source systems or compliance-driven historical tracking requirements? Let's evaluate the fit.";
-const others = [
-  { href: "/expertise/data-warehousing", label: "Data Warehousing & Architecture" },
-  { href: "/expertise/data-governance", label: "Governance & Lineage" },
-];
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const allExpertise = await getCollection('expertise');
+const others = allExpertise
+  .filter((e) => e.id !== entry.id)
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ href: `/expertise/${e.id}`, label: e.data.title }));
 ---
 
-<BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
+<BaseLayout title={entry.data.title} description={entry.data.description}>
   <div class="border-b border-rule">
     <div class="max-w-6xl mx-auto px-6 py-4">
       <a href="/expertise" class="eyebrow hover:text-oxblood transition-colors inline-flex items-center gap-2">
@@ -26,33 +32,28 @@ const others = [
   <section class="border-b border-rule">
     <div class="max-w-6xl mx-auto px-6 pt-20 pb-16">
       <div class="flex items-center gap-3 mb-6">
-        <span class="index-number text-lg">{capIndex}</span>
+        <span class="index-number text-lg">{entry.data.capIndex}</span>
         <span class="rule-oxblood"></span>
         <span class="eyebrow-oxblood">§ Capability</span>
       </div>
       <h1 class="display text-5xl md:text-7xl max-w-4xl leading-[0.98]">
-        {pageContent.data.title}
+        {entry.data.title}
       </h1>
       <p class="mt-8 text-xl font-serif italic text-ink-soft max-w-2xl leading-relaxed">
-        {pageContent.data.description}
+        {entry.data.description}
       </p>
     </div>
   </section>
 
   <section class="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-12 gap-16">
-    <div class="md:col-span-8 prose prose-neutral max-w-none text-ink-soft text-[1.0625rem] leading-relaxed font-serif
-                prose-headings:font-serif prose-headings:font-medium prose-headings:text-ink prose-headings:mt-10
-                prose-h3:text-2xl prose-h3:relative prose-h3:pl-5
-                prose-h3:before:content-[''] prose-h3:before:absolute prose-h3:before:left-0 prose-h3:before:top-2 prose-h3:before:bottom-2 prose-h3:before:w-[2px] prose-h3:before:bg-oxblood
-                prose-strong:text-ink prose-em:text-oxblood
-                prose-a:text-oxblood prose-a:no-underline hover:prose-a:underline">
+    <div class="md:col-span-8 prose-editorial">
       <Content />
     </div>
 
     <aside class="md:col-span-4">
       <div class="sticky top-28 border border-rule bg-paper-warm p-7 flex flex-col gap-5">
         <span class="eyebrow-oxblood">Start a conversation</span>
-        <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif">{ctaCopy}</p>
+        <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif">{entry.data.ctaCopy}</p>
         <a href="/contact" class="btn-oxblood self-start">
           Request an audit
           <span aria-hidden="true">→</span>

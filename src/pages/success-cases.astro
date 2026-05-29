@@ -1,5 +1,5 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageContent = await getEntry('pages', 'success-cases');
@@ -8,38 +8,8 @@ if (!pageContent) {
 }
 const { Content } = await render(pageContent);
 
-const cases = [
-  {
-    index: "01",
-    client: "Financial Services Firm",
-    industry: "Finance",
-    challenge: "Legacy data warehouse generating 6-hour reporting delays, blocking daily operations.",
-    metric: "94%",
-    metricLabel: "Reporting latency reduction",
-    result: "From 6 hours to under 20 minutes — daily ops unblocked.",
-    tags: ["Data Warehouse", "BigQuery", "dbt"],
-  },
-  {
-    index: "02",
-    client: "Retail Group",
-    industry: "Retail",
-    challenge: "Fragmented data sources across 12 disconnected systems with no unified view.",
-    metric: "12 → 1",
-    metricLabel: "Source systems unified",
-    result: "Single Data Vault 2.0 model with 100% source traceability.",
-    tags: ["Data Vault 2.0", "Snowflake", "Pipeline Engineering"],
-  },
-  {
-    index: "03",
-    client: "Healthcare Provider",
-    industry: "Healthcare",
-    challenge: "Zero data lineage or compliance documentation across 200+ production tables.",
-    metric: "8 wks",
-    metricLabel: "To full lineage coverage",
-    result: "Automated column-level lineage across 200+ tables, meeting regulatory requirements.",
-    tags: ["Data Governance", "Lineage", "Compliance"],
-  },
-];
+const cases = (await getCollection('successCases'))
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
@@ -65,11 +35,11 @@ const cases = [
       <article class="border-b border-rule py-16 grid grid-cols-1 md:grid-cols-12 gap-10">
         <!-- Index + Meta -->
         <div class="md:col-span-3">
-          <span class="index-number text-4xl">{c.index}</span>
-          <p class="eyebrow mt-6">{c.industry}</p>
-          <p class="mt-2 font-serif text-lg text-ink leading-snug">{c.client}</p>
+          <span class="index-number text-4xl">{c.data.index}</span>
+          <p class="eyebrow mt-6">{c.data.industry}</p>
+          <p class="mt-2 font-serif text-lg text-ink leading-snug">{c.data.client}</p>
           <div class="mt-5 flex flex-wrap gap-2">
-            {c.tags.map((tag) => (
+            {c.data.tags.map((tag) => (
               <span class="stack-chip">{tag}</span>
             ))}
           </div>
@@ -78,15 +48,15 @@ const cases = [
         <!-- Challenge -->
         <div class="md:col-span-4">
           <p class="eyebrow mb-4">Challenge</p>
-          <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{c.challenge}</p>
+          <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{c.data.challenge}</p>
         </div>
 
         <!-- Result with big metric -->
         <div class="md:col-span-5 md:border-l md:border-rule md:pl-10">
           <p class="eyebrow-oxblood mb-4">Outcome</p>
-          <div class="display text-6xl md:text-7xl text-oxblood leading-none">{c.metric}</div>
-          <p class="mt-2 text-[11px] uppercase tracking-widest font-mono text-muted">{c.metricLabel}</p>
-          <p class="mt-6 font-serif text-lg text-ink leading-snug">{c.result}</p>
+          <div class="display text-6xl md:text-7xl text-oxblood leading-none">{c.data.metric}</div>
+          <p class="mt-2 text-[11px] uppercase tracking-widest font-mono text-muted">{c.data.metricLabel}</p>
+          <p class="mt-6 font-serif text-lg text-ink leading-snug">{c.data.result}</p>
         </div>
       </article>
     ))}

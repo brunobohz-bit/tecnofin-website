@@ -1,3 +1,15 @@
+/* Self-hosted fonts via @fontsource — no external DNS, GDPR-safe */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/newsreader/400.css";
+@import "@fontsource/newsreader/400-italic.css";
+@import "@fontsource/newsreader/500.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
 @import "tailwindcss";
 
 @plugin "@tailwindcss/typography";
@@ -176,5 +188,24 @@
     height: 2px;
     background-color: var(--color-oxblood);
     display: block;
+  }
+
+  /* Editorial prose — shared between dna.astro, index.astro, and expertise subpages */
+  .prose-editorial {
+    @apply prose prose-neutral max-w-none text-ink-soft text-[1.0625rem] leading-relaxed font-serif;
+    @apply prose-headings:font-serif prose-headings:font-medium prose-headings:text-ink prose-headings:mt-10;
+    @apply prose-h3:text-2xl prose-h3:relative prose-h3:pl-5;
+    @apply prose-strong:text-ink prose-em:text-oxblood;
+    @apply prose-a:text-oxblood prose-a:no-underline hover:prose-a:underline;
+  }
+
+  .prose-editorial :global(h3)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background-color: var(--color-oxblood);
   }
 }

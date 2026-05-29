@@ -1,37 +1,13 @@
 ---
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { METRICS, PRINCIPLES } from '../config/site';
 
 const homeContent = await getEntry('pages', 'home');
 if (!homeContent) {
   throw new Error("Unable to locate home.md in content layer.");
 }
 const { Content } = await render(homeContent);
-
-const metrics = [
-  { value: "94%", label: "Average reporting-latency reduction" },
-  { value: "2.0", label: "Data Vault discipline, end-to-end" },
-  { value: "100%", label: "Column-level lineage coverage" },
-  { value: "0", label: "Pipeline-driven incidents post-handover" },
-];
-
-const principles = [
-  {
-    index: "I.",
-    title: "Pipelines are software",
-    body: "Tested, peer-reviewed, version-controlled. Not glue, not notebooks, not screenshots of dashboards.",
-  },
-  {
-    index: "II.",
-    title: "Schema is contract",
-    body: "Sources drift. We absorb that drift in the model so downstream consumers never see a broken interface.",
-  },
-  {
-    index: "III.",
-    title: "Lineage is non-negotiable",
-    body: "Every column in production answers three questions: where it came from, how it was derived, who depends on it.",
-  },
-];
 ---
 
 <BaseLayout title={homeContent.data.title} description={homeContent.data.description}>
@@ -139,7 +115,7 @@ const principles = [
     <!-- Metric strip -->
     <div class="border-t border-rule bg-paper-deep/30">
       <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 divide-x divide-rule">
-        {metrics.map((m) => (
+        {METRICS.map((m) => (
           <div class="px-6 py-8 first:pl-0 md:px-8 md:py-10">
             <div class="display text-4xl md:text-5xl text-oxblood leading-none">{m.value}</div>
             <p class="mt-3 text-[12px] uppercase tracking-widest font-mono text-muted leading-snug">{m.label}</p>
@@ -159,14 +135,13 @@ const principles = [
       <span class="rule-oxblood mt-6"></span>
     </div>
     <div class="md:col-span-8">
-      <div class="prose prose-neutral max-w-none text-ink-soft leading-relaxed text-[1.0625rem] prose-p:font-serif
+      <div class="prose-editorial
                   prose-p:first-of-type:first-letter:font-display
                   prose-p:first-of-type:first-letter:text-[3.75rem]
                   prose-p:first-of-type:first-letter:float-left
                   prose-p:first-of-type:first-letter:mr-3
                   prose-p:first-of-type:first-letter:leading-[0.85]
-                  prose-p:first-of-type:first-letter:text-oxblood
-                  prose-headings:font-serif prose-headings:text-ink prose-headings:mt-8">
+                  prose-p:first-of-type:first-letter:text-oxblood">
         <Content />
       </div>
     </div>
@@ -182,7 +157,7 @@ const principles = [
         </h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-rule">
-        {principles.map((p) => (
+        {PRINCIPLES.map((p) => (
           <article class="bg-paper p-8 md:p-10 flex flex-col gap-4 min-h-[260px]">
             <div class="index-number text-2xl">{p.index}</div>
             <h3 class="font-serif text-2xl leading-snug text-ink">{p.title}</h3>

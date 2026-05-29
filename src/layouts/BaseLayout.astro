@@ -1,11 +1,19 @@
 ---
+import { getCollection } from 'astro:content';
+import { SITE_URL, STATUS_PILL } from '../config/site';
+import '../styles/global.css';
+
 interface Props {
   title: string;
   description: string;
+  ogImage?: string;
 }
 
-const { title, description } = Astro.props;
-import '../styles/global.css';
+const { title, description, ogImage } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
+const ogImageURL = ogImage ?? `${SITE_URL}/og-default.png`;
+const pageTitle = `${title} | Tecnofin`;
 
 const pathname = Astro.url.pathname;
 const isActive = (href: string) => {
@@ -19,6 +27,10 @@ const nav = [
   { href: '/success-cases', label: 'Success Cases' },
   { href: '/contact', label: 'Contact' },
 ];
+
+const expertiseLinks = (await getCollection('expertise'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ href: `/expertise/${e.id}`, label: e.data.title }));
 ---
 
 <!doctype html>
@@ -27,18 +39,27 @@ const nav = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} | Tecnofin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <title>{pageTitle}</title>
+
+    <!-- Open Graph / Twitter Card -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- Header -->
     <header class="border-b border-rule bg-paper/85 backdrop-blur sticky top-0 z-50">
       <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
         <a href="/" class="flex items-center gap-3">
-          <img src="/logo.png" alt="Tecnofin" class="h-9 w-auto" />
+          <img src="/logo.png" alt="Tecnofin" class="h-9 w-auto" width="144" height="36" />
         </a>
         <nav class="hidden md:flex items-center gap-9 text-[13px] font-medium">
           {nav.map((item) => (
@@ -54,7 +75,7 @@ const nav = [
           ))}
         </nav>
         <div class="flex items-center gap-3">
-          <span class="status-pill hidden lg:inline-flex">Booking Q3 2026</span>
+          <span class="status-pill hidden lg:inline-flex">{STATUS_PILL}</span>
           <a href="/contact" class="btn-oxblood">
             Start a project
             <span aria-hidden="true">→</span>
@@ -88,7 +109,7 @@ const nav = [
       <div class="border-t border-rule">
         <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-12 gap-8 text-sm">
           <div class="col-span-2 md:col-span-4">
-            <img src="/logo.png" alt="Tecnofin" class="h-8 w-auto mb-4 opacity-90" />
+            <img src="/logo.png" alt="Tecnofin" class="h-8 w-auto mb-4 opacity-90" width="128" height="32" />
             <p class="text-muted text-[13px] leading-relaxed max-w-xs">
               Pipeline infrastructure and Data Vault engineering for enterprise analytics teams.
             </p>
@@ -96,9 +117,11 @@ const nav = [
           <div class="md:col-span-3">
             <p class="eyebrow mb-4">Capabilities</p>
             <ul class="flex flex-col gap-2 text-ink-soft">
-              <li><a href="/expertise/data-warehousing" class="hover:text-oxblood transition-colors">Data Warehousing</a></li>
-              <li><a href="/expertise/data-vault" class="hover:text-oxblood transition-colors">Data Vault Modeling</a></li>
-              <li><a href="/expertise/data-governance" class="hover:text-oxblood transition-colors">Governance & Lineage</a></li>
+              {expertiseLinks.map((link) => (
+                <li>
+                  <a href={link.href} class="hover:text-oxblood transition-colors">{link.label}</a>
+                </li>
+              ))}
             </ul>
           </div>
           <div class="md:col-span-3">

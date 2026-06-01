@@ -44,13 +44,13 @@ const { Content } = await render(homeContent);
         <svg viewBox="0 0 420 360" class="relative w-full h-auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#D9CFB9" stroke-width="0.5" opacity="0.55"/>
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2E2922" stroke-width="0.5" opacity="0.55"/>
             </pattern>
           </defs>
           <rect width="420" height="360" fill="url(#grid)" />
 
           <!-- Edges: sources → vault → marts -->
-          <g fill="none" stroke="#ddab4a" stroke-width="1.25" opacity="0.75">
+          <g fill="none" stroke="#D4A84B" stroke-width="1.25" opacity="0.75">
             <path d="M 60 60 C 150 60, 150 180, 220 180" />
             <path d="M 60 130 C 150 130, 150 180, 220 180" />
             <path d="M 60 200 C 150 200, 150 180, 220 180" />
@@ -61,50 +61,50 @@ const { Content } = await render(homeContent);
           </g>
 
           <!-- Source nodes (left column) -->
-          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">
+          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">
             <g>
-              <rect x="20" y="48" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="20" y="48" width="80" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="60" y="63" text-anchor="middle">SOURCE_01</text>
             </g>
             <g>
-              <rect x="20" y="118" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="20" y="118" width="80" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="60" y="133" text-anchor="middle">SOURCE_02</text>
             </g>
             <g>
-              <rect x="20" y="188" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="20" y="188" width="80" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="60" y="203" text-anchor="middle">SOURCE_03</text>
             </g>
             <g>
-              <rect x="20" y="258" width="80" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="20" y="258" width="80" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="60" y="273" text-anchor="middle">SOURCE_04</text>
             </g>
           </g>
 
           <!-- Vault hub (center) -->
           <g>
-            <rect x="220" y="160" width="60" height="40" fill="#ddab4a" stroke="#b88828" stroke-width="0.75"/>
-            <text x="250" y="178" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">DATA</text>
-            <text x="250" y="190" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">VAULT</text>
+            <rect x="220" y="160" width="60" height="40" fill="#D4A84B" stroke="#B08830" stroke-width="0.75"/>
+            <text x="250" y="178" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0D0B09">DATA</text>
+            <text x="250" y="190" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0D0B09">VAULT</text>
           </g>
 
           <!-- Output marts (right column) -->
-          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#1A1612">
+          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">
             <g>
-              <rect x="340" y="78" width="70" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="340" y="78" width="70" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="375" y="93" text-anchor="middle">MART · BI</text>
             </g>
             <g>
-              <rect x="340" y="168" width="70" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="340" y="168" width="70" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="375" y="183" text-anchor="middle">MART · ML</text>
             </g>
             <g>
-              <rect x="340" y="258" width="70" height="24" fill="#FBF7EE" stroke="#1A1612" stroke-width="0.75"/>
+              <rect x="340" y="258" width="70" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="375" y="273" text-anchor="middle">MART · OPS</text>
             </g>
           </g>
 
           <!-- Legend strip -->
-          <g font-family="JetBrains Mono, monospace" font-size="7" fill="#6E6357" letter-spacing="1.2">
+          <g font-family="JetBrains Mono, monospace" font-size="7" fill="#8A7A6A" letter-spacing="1.2">
             <text x="20" y="335">FIG. 01 — REFERENCE PIPELINE ARCHITECTURE</text>
             <text x="20" y="348">SOURCES → RAW VAULT → BUSINESS MARTS</text>
           </g>

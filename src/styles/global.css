@@ -21,24 +21,24 @@
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Documentary Modern palette */
-  --color-paper: #F5EFE3;
-  --color-paper-deep: #EDE5D3;
-  --color-paper-warm: #FBF7EE;
-  --color-ink: #1A1612;
-  --color-ink-soft: #2A2520;
-  --color-oxblood: #ddab4a;
-  --color-oxblood-deep: #b88828;
-  --color-oxblood-soft: #e8c06e;
-  --color-rule: #D9CFB9;
-  --color-rule-soft: #E6DEC9;
-  --color-muted: #6E6357;
-  --color-muted-soft: #8A7F71;
+  /* Midnight Vault palette */
+  --color-paper: #0D0B09;
+  --color-paper-deep: #161310;
+  --color-paper-warm: #1E1A16;
+  --color-ink: #F5EFE3;
+  --color-ink-soft: #D8CFC0;
+  --color-oxblood: #D4A84B;
+  --color-oxblood-deep: #B08830;
+  --color-oxblood-soft: #E2C070;
+  --color-rule: #2E2922;
+  --color-rule-soft: #3A302A;
+  --color-muted: #8A7A6A;
+  --color-muted-soft: #7A6A5A;
 
   /* Legacy aliases retained so existing class names keep working */
-  --color-cream: #F5EFE3;
-  --color-border-subtle: #D9CFB9;
-  --color-muted-gray: #6E6357;
+  --color-cream: #0D0B09;
+  --color-border-subtle: #2E2922;
+  --color-muted-gray: #8A7A6A;
 }
 
 @layer base {

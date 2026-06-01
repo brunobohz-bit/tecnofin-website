@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 44" fill="none" role="img" aria-label="Tecnofin">
+  <!-- Orange icon square — exact brand color #FE8B20 -->
+  <rect width="44" height="44" rx="5" fill="#FE8B20"/>
+
+  <!-- White bubble-node cluster — positions & radii traced from original logo -->
+  <circle cx="17.1" cy="6.7"  r="2.5" fill="white"/>
+  <circle cx="24.0" cy="9.5"  r="3.0" fill="white"/>
+  <circle cx="17.5" cy="17.0" r="3.7" fill="white"/>
+  <circle cx="26.5" cy="17.0" r="3.7" fill="white"/>
+  <circle cx="11.5" cy="25.0" r="3.1" fill="white"/>
+  <circle cx="22.0" cy="25.5" r="3.7" fill="white"/>
+  <circle cx="37.0" cy="23.5" r="2.6" fill="white"/>
+  <circle cx="31.0" cy="27.5" r="3.1" fill="white"/>
+  <circle cx="12.5" cy="33.0" r="2.5" fill="white"/>
+
+  <!-- Wordmark — cream for Midnight Vault dark canvas -->
+  <text
+    x="54"
+    y="29"
+    font-family="Inter, system-ui, -apple-system, sans-serif"
+    font-size="19"
+    font-weight="600"
+    letter-spacing="1.2"
+    fill="#F5EFE3"
+  >TECNOFIN</text>
+</svg>

@@ -7,10 +7,12 @@ if (!contactContent) {
   throw new Error("Unable to locate contact.md in content layer.");
 }
 const { Content } = await render(contactContent);
+
+const CONTACT_EMAIL = 'eduardo.hernandez@tecnofin.com';
 ---
 
 <BaseLayout title={contactContent.data.title} description={contactContent.data.description}>
-  <section class="max-w-6xl mx-auto px-6 pt-24 pb-24 grid grid-cols-1 md:grid-cols-12 gap-16">
+  <section class="max-w-6xl mx-auto px-6 pt-24 pb-24 grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
     <!-- Context Panel -->
     <div class="md:col-span-5">
       <div class="flex items-center gap-3 mb-6">
@@ -24,6 +26,11 @@ const { Content } = await render(contactContent);
         <Content />
       </div>
 
+      <a href={`mailto:${CONTACT_EMAIL}`} class="btn-oxblood mb-10">
+        Email an architect
+        <span aria-hidden="true">→</span>
+      </a>
+
       <div class="border-t border-rule pt-6 flex flex-col gap-4">
         <div>
           <p class="eyebrow mb-2">Response window</p>
@@ -31,46 +38,212 @@ const { Content } = await render(contactContent);
         </div>
         <div>
           <p class="eyebrow mb-2">Direct</p>
-          <a href="mailto:hello@tecnofin.io" class="font-mono text-sm text-oxblood hover:underline">hello@tecnofin.io</a>
+          <a href={`mailto:${CONTACT_EMAIL}`} class="font-mono text-sm text-oxblood hover:underline">{CONTACT_EMAIL}</a>
         </div>
       </div>
     </div>
 
-    <!-- Contact Form -->
+    <!-- Data Vault topology diagram -->
     <div class="md:col-span-7">
-      <!-- TODO: Replace YOUR_FORM_ID with your Formspree form ID -->
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="flex flex-col gap-7 bg-paper-warm border border-rule p-8 md:p-12">
-        <div class="flex items-center justify-between border-b border-rule pb-5 mb-2">
-          <span class="eyebrow-oxblood">Engagement intake — Form 01</span>
-          <span class="font-mono text-[11px] text-muted">3 fields · 90 sec</span>
+      <figure class="dv-panel bg-paper-warm border border-rule p-8 md:p-10 overflow-hidden">
+        <figcaption class="flex items-center justify-between border-b border-rule pb-5 mb-7">
+          <span class="eyebrow-oxblood">Data Vault 2.0 — Topology</span>
+          <span class="font-mono text-[11px] text-muted">Hub · Link · Satellite</span>
+        </figcaption>
+
+        <svg
+          class="dv-svg w-full h-auto"
+          viewBox="0 0 560 600"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="A Data Vault 2.0 topology: two hubs connected by a link, each surrounded by satellites carrying historised context."
+        >
+          <defs>
+            <!-- Grid pattern -->
+            <pattern id="dv-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M 28 0 L 0 0 0 28" fill="none" stroke="var(--color-rule)" stroke-width="0.6" opacity="0.5" />
+            </pattern>
+            <!-- Soft gold glow -->
+            <filter id="dv-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient id="dv-hub-fill" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="var(--color-oxblood-soft)" />
+              <stop offset="100%" stop-color="var(--color-oxblood-deep)" />
+            </radialGradient>
+          </defs>
+
+          <!-- Background grid -->
+          <rect x="0" y="0" width="560" height="600" fill="url(#dv-grid)" />
+
+          <!-- ============ CONNECTION LINES ============ -->
+          <g stroke="var(--color-rule-soft)" stroke-width="1.5">
+            <!-- Hub Customer -> Link -->
+            <line x1="160" y1="140" x2="280" y2="300" />
+            <!-- Hub Account -> Link -->
+            <line x1="400" y1="140" x2="280" y2="300" />
+            <!-- Customer hub -> its satellites -->
+            <line x1="160" y1="140" x2="70" y2="250" />
+            <line x1="160" y1="140" x2="120" y2="420" />
+            <!-- Account hub -> its satellites -->
+            <line x1="400" y1="140" x2="490" y2="250" />
+            <line x1="400" y1="140" x2="440" y2="420" />
+            <!-- Link -> its satellite -->
+            <line x1="280" y1="350" x2="280" y2="500" />
+          </g>
+
+          <!-- Animated dataflow along the two core link edges -->
+          <g class="dv-flow" stroke="var(--color-oxblood)" stroke-width="1.6" stroke-dasharray="5 9" stroke-linecap="round">
+            <line x1="160" y1="140" x2="280" y2="300" />
+            <line x1="400" y1="140" x2="280" y2="300" />
+          </g>
+
+          <!-- ============ SATELLITES ============ -->
+          <!-- Each satellite: rounded rect with mono label -->
+          <g class="dv-sat" font-family="var(--font-mono)">
+            <!-- Customer · profile -->
+            <g transform="translate(18, 222)">
+              <rect width="104" height="52" rx="6" fill="var(--color-paper-deep)" stroke="var(--color-rule-soft)" />
+              <text x="12" y="22" font-size="9" letter-spacing="1.5" fill="var(--color-muted)">SAT</text>
+              <text x="12" y="38" font-size="11" fill="var(--color-ink-soft)">cust_profile</text>
+            </g>
+            <!-- Customer · history -->
+            <g transform="translate(68, 396)">
+              <rect width="104" height="52" rx="6" fill="var(--color-paper-deep)" stroke="var(--color-rule-soft)" />
+              <text x="12" y="22" font-size="9" letter-spacing="1.5" fill="var(--color-muted)">SAT</text>
+              <text x="12" y="38" font-size="11" fill="var(--color-ink-soft)">cust_history</text>
+            </g>
+            <!-- Account · terms -->
+            <g transform="translate(438, 222)">
+              <rect width="104" height="52" rx="6" fill="var(--color-paper-deep)" stroke="var(--color-rule-soft)" />
+              <text x="12" y="22" font-size="9" letter-spacing="1.5" fill="var(--color-muted)">SAT</text>
+              <text x="12" y="38" font-size="11" fill="var(--color-ink-soft)">acct_terms</text>
+            </g>
+            <!-- Account · balance -->
+            <g transform="translate(388, 396)">
+              <rect width="104" height="52" rx="6" fill="var(--color-paper-deep)" stroke="var(--color-rule-soft)" />
+              <text x="12" y="22" font-size="9" letter-spacing="1.5" fill="var(--color-muted)">SAT</text>
+              <text x="12" y="38" font-size="11" fill="var(--color-ink-soft)">acct_balance</text>
+            </g>
+            <!-- Link · effectivity -->
+            <g transform="translate(228, 502)">
+              <rect width="104" height="52" rx="6" fill="var(--color-paper-deep)" stroke="var(--color-rule-soft)" />
+              <text x="12" y="22" font-size="9" letter-spacing="1.5" fill="var(--color-muted)">SAT</text>
+              <text x="12" y="38" font-size="11" fill="var(--color-ink-soft)">effectivity</text>
+            </g>
+          </g>
+
+          <!-- ============ LINK (diamond) ============ -->
+          <g class="dv-link">
+            <rect x="244" y="289" width="72" height="72" rx="10"
+              transform="rotate(45 280 325)"
+              fill="var(--color-paper)" stroke="var(--color-oxblood)" stroke-width="1.5" />
+            <text x="280" y="320" text-anchor="middle" font-family="var(--font-mono)" font-size="9" letter-spacing="1.5" fill="var(--color-oxblood)">LINK</text>
+            <text x="280" y="335" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-soft)">cust×acct</text>
+          </g>
+
+          <!-- ============ HUBS (hexagons) ============ -->
+          <!-- Customer hub -->
+          <g class="dv-hub" filter="url(#dv-glow)">
+            <polygon points="160,98 196,119 196,161 160,182 124,161 124,119"
+              fill="url(#dv-hub-fill)" stroke="var(--color-oxblood-soft)" stroke-width="1.5" />
+            <text x="160" y="135" text-anchor="middle" font-family="var(--font-mono)" font-size="9" letter-spacing="1.5" fill="var(--color-paper)">HUB</text>
+            <text x="160" y="151" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="500" fill="var(--color-paper)">customer</text>
+          </g>
+          <!-- Account hub -->
+          <g class="dv-hub dv-hub--delay" filter="url(#dv-glow)">
+            <polygon points="400,98 436,119 436,161 400,182 364,161 364,119"
+              fill="url(#dv-hub-fill)" stroke="var(--color-oxblood-soft)" stroke-width="1.5" />
+            <text x="400" y="135" text-anchor="middle" font-family="var(--font-mono)" font-size="9" letter-spacing="1.5" fill="var(--color-paper)">HUB</text>
+            <text x="400" y="151" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="500" fill="var(--color-paper)">account</text>
+          </g>
+        </svg>
+
+        <!-- Legend -->
+        <div class="mt-7 pt-5 border-t border-rule flex flex-wrap gap-x-7 gap-y-3 font-mono text-[11px] text-muted">
+          <span class="flex items-center gap-2"><span class="dv-key dv-key--hub"></span>Hub — business keys</span>
+          <span class="flex items-center gap-2"><span class="dv-key dv-key--link"></span>Link — relationships</span>
+          <span class="flex items-center gap-2"><span class="dv-key dv-key--sat"></span>Satellite — historised context</span>
         </div>
-
-        <div>
-          <label for="name" class="eyebrow block mb-2">01 · Contact name</label>
-          <input type="text" id="name" name="name" required
-            class="w-full bg-transparent border-0 border-b border-rule px-0 py-3 text-base font-serif focus:outline-none focus:border-oxblood transition-colors" />
-        </div>
-
-        <div>
-          <label for="email" class="eyebrow block mb-2">02 · Work email</label>
-          <input type="email" id="email" name="email" required
-            class="w-full bg-transparent border-0 border-b border-rule px-0 py-3 text-base font-serif focus:outline-none focus:border-oxblood transition-colors" />
-        </div>
-
-        <div>
-          <label for="message" class="eyebrow block mb-2">03 · Scope of work / infrastructure hurdles</label>
-          <textarea id="message" name="message" rows="5" required
-            class="w-full bg-transparent border-0 border-b border-rule px-0 py-3 text-base font-serif focus:outline-none focus:border-oxblood transition-colors resize-none"></textarea>
-        </div>
-
-        <!-- Honeypot field — hidden from humans, catches bots that fill all fields -->
-        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
-
-        <button type="submit" class="btn-oxblood self-start mt-2">
-          Submit for review
-          <span aria-hidden="true">→</span>
-        </button>
-      </form>
+      </figure>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .dv-panel {
+    position: relative;
+  }
+  .dv-svg {
+    display: block;
+  }
+
+  /* Flowing dataflow along the two core link edges */
+  .dv-flow line {
+    animation: dv-dash 1.4s linear infinite;
+  }
+  @keyframes dv-dash {
+    to { stroke-dashoffset: -28; }
+  }
+
+  /* Gentle breathing glow on the hubs */
+  .dv-hub {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dv-pulse 3.6s ease-in-out infinite;
+  }
+  .dv-hub--delay {
+    animation-delay: 1.8s;
+  }
+  @keyframes dv-pulse {
+    0%, 100% { opacity: 0.92; }
+    50%      { opacity: 1; }
+  }
+
+  /* Link diamond soft pulse */
+  .dv-link {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dv-link-pulse 4.2s ease-in-out infinite;
+  }
+  @keyframes dv-link-pulse {
+    0%, 100% { opacity: 0.85; }
+    50%      { opacity: 1; }
+  }
+
+  /* Legend keys */
+  .dv-key {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .dv-key--hub {
+    background: var(--color-oxblood);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-oxblood) 22%, transparent);
+  }
+  .dv-key--link {
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-oxblood);
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+  .dv-key--sat {
+    background: var(--color-paper-deep);
+    border: 1px solid var(--color-rule-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dv-flow line,
+    .dv-hub,
+    .dv-link {
+      animation: none;
+    }
+  }
+</style>

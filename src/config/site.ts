@@ -1,7 +1,5 @@
 export const SITE_URL = 'https://tecnofin.io';
 
-export const STATUS_PILL = 'Booking Q3 2026';
-
 export const METRICS = [
   { value: "94%", label: "Average reporting-latency reduction" },
   { value: "2.0", label: "Data Vault discipline, end-to-end" },

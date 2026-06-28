@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE_URL, STATUS_PILL } from '../config/site';
+import { SITE_URL } from '../config/site';
 import '../styles/global.css';
 
 interface Props {
@@ -75,7 +75,6 @@ const expertiseLinks = (await getCollection('expertise'))
           ))}
         </nav>
         <div class="flex items-center gap-3">
-          <span class="status-pill hidden lg:inline-flex">{STATUS_PILL}</span>
           <a href="/contact" class="btn-oxblood">
             Start a project
             <span aria-hidden="true">→</span>

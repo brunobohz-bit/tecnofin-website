@@ -10,7 +10,7 @@ const { Content } = await render(page);
 
 <BaseLayout title={page.data.title} description={page.data.description}>
   <!-- THE SHIFT / THE CATCH -->
-  <section class="border-b border-rule">
+  <section class="border-b border-rule depth-hero">
     <div class="max-w-6xl mx-auto px-6 pt-24 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
       <div class="lg:col-span-8">
         <div class="flex items-center gap-3 mb-8">
@@ -68,7 +68,7 @@ const { Content } = await render(page);
       <span class="eyebrow-oxblood">§ What changes</span>
     </div>
     {VALUE_OUTCOMES.map((o) => (
-      <article class="border-t border-rule py-14 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
+      <article class="reveal border-t border-rule py-14 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
         <div class="md:col-span-3">
           <div class="display text-6xl md:text-7xl text-oxblood leading-none">{o.metric}</div>
         </div>
@@ -95,13 +95,13 @@ const { Content } = await render(page);
   <!-- BEFORE / WITH-US LEDGER -->
   <section class="border-t border-rule bg-paper-deep/30">
     <div class="max-w-6xl mx-auto px-6 py-24">
-      <div class="max-w-3xl mb-14">
+      <div class="max-w-3xl mb-14 reveal">
         <span class="eyebrow-oxblood">§ The ledger</span>
         <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
           The same data. A different business.
         </h2>
       </div>
-      <div class="border border-rule">
+      <div class="border border-rule reveal">
         <div class="grid grid-cols-2 border-b border-rule">
           <div class="px-6 py-4 border-r border-rule">
             <span class="eyebrow">Without the foundation</span>
@@ -128,13 +128,13 @@ const { Content } = await render(page);
   <!-- WHO FEELS THE VALUE -->
   <section class="border-t border-rule">
     <div class="max-w-6xl mx-auto px-6 py-24">
-      <div class="max-w-3xl mb-14">
+      <div class="max-w-3xl mb-14 reveal">
         <span class="eyebrow-oxblood">§ Who feels it</span>
         <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
           One foundation. Every seat at the table.
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule reveal-group">
         {STAKEHOLDERS.map((s) => (
           <article class="bg-paper p-8 md:p-10 flex flex-col gap-4 min-h-[180px]">
             <h3 class="font-mono text-[12px] uppercase tracking-widest text-oxblood">{s.role}</h3>

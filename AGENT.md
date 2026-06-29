@@ -102,7 +102,11 @@ astro.config.mjs    package.json       package-lock.json
 | `/contact` | `src/pages/contact.astro` | `pages/contact.md`; email is **hardcoded** in the route file (`mailto:`, no form). Right column is the custom "Two-Week Build → Value" data-graph SVG |
 | `/404` | `src/pages/404.astro` | — |
 
-Global shell (`<head>`, nav, footer) lives in `src/layouts/BaseLayout.astro`.
+Global shell (`<head>`, nav, footer) lives in `src/layouts/BaseLayout.astro`. The
+`<head>` includes `ProfessionalService` **JSON-LD** (inert, not executable JS) and OG/
+Twitter tags defaulting to `public/og-default.png` (a 1200×630 branded card, raster —
+regenerate from an SVG via `sharp` if the brand changes). The header carries a desktop nav
+plus a **pure-CSS `<details>` mobile menu** (`md:hidden`) — no JavaScript.
 
 ---
 
@@ -118,10 +122,28 @@ elsewhere.
 | `--color-ink-soft` | `#D8CFC0` | Body / secondary text |
 | `--color-oxblood` | `#D4A84B` | Accent (amber/gold — *not* red, despite the legacy name) |
 | `--color-rule` | `#2E2922` | Borders, dividers |
-| `--color-muted` | `#8A7A6A` | Labels, captions |
+| `--color-muted` | `#9A8A78` | Labels, captions (lifted from `#8A7A6A` for WCAG AA on warm panels) |
 
 Fonts: `--font-display` Instrument Serif · `--font-serif` Newsreader ·
 `--font-sans` Inter · `--font-mono` JetBrains Mono.
+
+### Motion system (pure CSS — preserves the zero-JS rule)
+
+All motion is CSS-only and **`prefers-reduced-motion` guarded**. Shared utilities live
+in `global.css`:
+
+- `.reveal` / `.reveal-group` — scroll-reveal (fade + rise) via CSS scroll-driven
+  animations (`animation-timeline: view()`). The hidden initial state sits **only** inside
+  a `@supports (animation-timeline: view())` + `prefers-reduced-motion: no-preference`
+  guard, so unsupported browsers and reduced-motion users see content immediately (progressive
+  enhancement — never leave content stuck invisible). `.reveal-group` staggers up to 5 direct
+  children via `nth-child` ranges.
+- `.depth-hero` / `.depth-bloom` — static radial gold glow behind a hero headline / focal
+  element (no motion; safe for everyone).
+- The homepage hero's load-time "assembly" sequence (headline rise, lineage-graph draw-in via
+  `stroke-dashoffset`, node pop-in, metric-strip stagger) is a **scoped `<style>` block in
+  `index.astro`**, also fully reduced-motion guarded. The contact data-graph keeps its own
+  scoped animation (`bv-*`).
 
 ---
 
@@ -142,8 +164,6 @@ schema. The cards render automatically, sorted by `order`.
 
 ## 7. Known issues (verify/fix before relying on them)
 
-- **Missing OG image:** `BaseLayout.astro` defaults to `/og-default.png`, which does
-  not exist in `public/`. Social-share previews are broken until it is added.
 - **Orphaned files:** `pages/expertise-warehousing.md`, `expertise-vault.md`,
   `expertise-governance.md` are **not used by any route** (the `expertise`
   collection replaced them). Editing them changes nothing on the live site.

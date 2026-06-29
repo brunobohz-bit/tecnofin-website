@@ -32,7 +32,7 @@
   --color-oxblood-soft: #E2C070;
   --color-rule: #2E2922;
   --color-rule-soft: #3A302A;
-  --color-muted: #8A7A6A;
+  --color-muted: #9A8A78;
   --color-muted-soft: #7A6A5A;
 
   /* Legacy aliases retained so existing class names keep working */
@@ -61,6 +61,14 @@
   ::selection {
     background: var(--color-oxblood);
     color: var(--color-ink);
+  }
+
+  /* Visible keyboard focus across all interactive elements (low specificity
+     so component styles can override if ever needed). */
+  :where(a, button, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--color-oxblood);
+    outline-offset: 3px;
+    border-radius: 3px;
   }
 }
 
@@ -207,5 +215,73 @@
     bottom: 0.5rem;
     width: 2px;
     background-color: var(--color-oxblood);
+  }
+
+  /* ---- Depth: restrained radial glow (static — safe for all users) ---- */
+  .depth-hero { position: relative; }
+  .depth-hero::before {
+    content: "";
+    position: absolute;
+    top: -12%;
+    left: -8%;
+    width: 60%;
+    height: 78%;
+    background: radial-gradient(closest-side,
+      color-mix(in srgb, var(--color-oxblood) 13%, transparent), transparent 72%);
+    filter: blur(64px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .depth-hero > * { position: relative; z-index: 1; }
+
+  /* A soft amber bloom placed behind a focal element (e.g. the contact graph). */
+  .depth-bloom { position: relative; }
+  .depth-bloom::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 55%;
+    height: 45%;
+    background: radial-gradient(closest-side,
+      color-mix(in srgb, var(--color-oxblood) 16%, transparent), transparent 70%);
+    filter: blur(56px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .depth-bloom > * { position: relative; z-index: 1; }
+}
+
+/* ============================================================
+   Scroll-reveal choreography — pure CSS, progressive enhancement.
+   The hidden initial state lives ONLY inside the @supports +
+   no-preference guard, so browsers without scroll-driven
+   animations (and reduced-motion users) render content normally.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(1.4rem);
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 28%;
+    }
+
+    .reveal-group > * {
+      opacity: 0;
+      transform: translateY(1.4rem);
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+    }
+    .reveal-group > *:nth-child(1) { animation-range: entry 0%  cover 24%; }
+    .reveal-group > *:nth-child(2) { animation-range: entry 5%  cover 29%; }
+    .reveal-group > *:nth-child(3) { animation-range: entry 10% cover 34%; }
+    .reveal-group > *:nth-child(4) { animation-range: entry 15% cover 39%; }
+    .reveal-group > *:nth-child(5) { animation-range: entry 20% cover 44%; }
+
+    @keyframes reveal-rise {
+      to { opacity: 1; transform: none; }
+    }
   }
 }

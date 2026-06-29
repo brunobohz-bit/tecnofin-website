@@ -54,6 +54,21 @@ const expertiseLinks = (await getCollection('expertise'))
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Structured data (inert JSON-LD, not executable JS) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Tecnofin",
+      "url": SITE_URL,
+      "logo": `${SITE_URL}/logo.png`,
+      "image": `${SITE_URL}/og-default.png`,
+      "description": "Enterprise data engineering — pipeline infrastructure, Data Vault 2.0 modeling, and automated governance that turn a company's unique data into a fast, trusted, AI-ready foundation it owns outright.",
+      "slogan": "Everyone gets the same AI. Your data is the only edge.",
+      "knowsAbout": ["Data Vault 2.0", "Data warehousing", "dbt", "Snowflake", "BigQuery", "DuckDB", "Data governance", "Data lineage", "Schema contracts"],
+      "areaServed": "Global",
+      "foundingDate": "2018"
+    })} />
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- Header -->
@@ -76,10 +91,33 @@ const expertiseLinks = (await getCollection('expertise'))
           ))}
         </nav>
         <div class="flex items-center gap-3">
-          <a href="/contact" class="btn-oxblood">
+          <a href="/contact" class="btn-oxblood hidden md:inline-flex">
             Start a two-week build
             <span aria-hidden="true">→</span>
           </a>
+
+          <!-- Mobile menu — pure-CSS disclosure, no JS -->
+          <details class="mobile-nav md:hidden">
+            <summary class="mobile-nav__toggle" aria-label="Toggle navigation menu">
+              <svg class="mobile-nav__icon mobile-nav__icon--open" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <line x1="3" y1="6" x2="17" y2="6" /><line x1="3" y1="10" x2="17" y2="10" /><line x1="3" y1="14" x2="17" y2="14" />
+              </svg>
+              <svg class="mobile-nav__icon mobile-nav__icon--close" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <line x1="5" y1="5" x2="15" y2="15" /><line x1="15" y1="5" x2="5" y2="15" />
+              </svg>
+            </summary>
+            <nav class="mobile-nav__panel">
+              {nav.map((item) => (
+                <a href={item.href} class={`mobile-nav__link ${isActive(item.href) ? 'is-active' : ''}`}>
+                  {item.label}
+                </a>
+              ))}
+              <a href="/contact" class="btn-oxblood mt-4 self-start">
+                Start a two-week build
+                <span aria-hidden="true">→</span>
+              </a>
+            </nav>
+          </details>
         </div>
       </div>
     </header>
@@ -156,3 +194,53 @@ const expertiseLinks = (await getCollection('expertise'))
     </footer>
   </body>
 </html>
+
+<style>
+  /* Mobile disclosure menu — pure CSS, no JS. The header is sticky (a
+     positioned ancestor), so the panel resolves its absolute position to it. */
+  .mobile-nav { position: static; }
+
+  .mobile-nav__toggle {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 999px;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+  .mobile-nav__toggle:hover { border-color: var(--color-oxblood); color: var(--color-oxblood); }
+  .mobile-nav__toggle::-webkit-details-marker { display: none; }
+
+  .mobile-nav__icon--close { display: none; }
+  .mobile-nav[open] .mobile-nav__icon--open { display: none; }
+  .mobile-nav[open] .mobile-nav__icon--close { display: inline; }
+
+  .mobile-nav__panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-paper);
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    padding: 0.5rem 1.5rem 1.5rem;
+    box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.7);
+  }
+  .mobile-nav__link {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--color-ink-soft);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-rule);
+    transition: color 200ms ease;
+  }
+  .mobile-nav__link:hover { color: var(--color-oxblood); }
+  .mobile-nav__link.is-active { color: var(--color-oxblood); }
+</style>

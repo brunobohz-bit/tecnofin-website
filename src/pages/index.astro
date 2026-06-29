@@ -11,21 +11,21 @@ if (!homeContent) {
 
 <BaseLayout title={homeContent.data.title} description={homeContent.data.description}>
   <!-- HERO -->
-  <section class="relative overflow-hidden border-b border-rule">
+  <section class="relative overflow-hidden border-b border-rule depth-hero">
     <div class="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
       <!-- Headline column -->
       <div class="lg:col-span-7">
-        <div class="flex items-center gap-3 mb-8">
+        <div class="flex items-center gap-3 mb-8 hero-in hero-in-1">
           <span class="rule-oxblood"></span>
           <span class="eyebrow-oxblood">Enterprise Data Infrastructure · Est. 2018</span>
         </div>
-        <h1 class="display text-[2.75rem] sm:text-6xl lg:text-[5.25rem] text-ink leading-[0.98] tracking-tight">
+        <h1 class="display text-[2.75rem] sm:text-6xl lg:text-[5.25rem] text-ink leading-[0.98] tracking-tight hero-in hero-in-2">
           We build <em class="italic text-oxblood">bulletproof</em> pipeline infrastructure for data teams that can't afford to break.
         </h1>
-        <p class="mt-10 max-w-xl text-[1.0625rem] leading-relaxed text-ink-soft font-serif">
+        <p class="mt-10 max-w-xl text-[1.0625rem] leading-relaxed text-ink-soft font-serif hero-in hero-in-3">
           {homeContent.data.description}
         </p>
-        <div class="mt-10 flex flex-wrap items-center gap-4">
+        <div class="mt-10 flex flex-wrap items-center gap-4 hero-in hero-in-4">
           <a href="/contact" class="btn-oxblood">
             Start a two-week build
             <span aria-hidden="true">→</span>
@@ -49,7 +49,7 @@ if (!homeContent) {
           <rect width="420" height="360" fill="url(#grid)" />
 
           <!-- Edges: sources → vault → marts -->
-          <g fill="none" stroke="#D4A84B" stroke-width="1.25" opacity="0.75">
+          <g class="hero-edges" fill="none" stroke="#D4A84B" stroke-width="1.25" opacity="0.75">
             <path d="M 60 60 C 150 60, 150 180, 220 180" />
             <path d="M 60 130 C 150 130, 150 180, 220 180" />
             <path d="M 60 200 C 150 200, 150 180, 220 180" />
@@ -60,7 +60,7 @@ if (!homeContent) {
           </g>
 
           <!-- Source nodes (left column) -->
-          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">
+          <g class="hero-nodes" font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">
             <g>
               <rect x="20" y="48" width="80" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="60" y="63" text-anchor="middle">SOURCE_01</text>
@@ -80,14 +80,14 @@ if (!homeContent) {
           </g>
 
           <!-- Vault hub (center) -->
-          <g>
+          <g class="hero-hub">
             <rect x="220" y="160" width="60" height="40" fill="#D4A84B" stroke="#B08830" stroke-width="0.75"/>
             <text x="250" y="178" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0D0B09">DATA</text>
             <text x="250" y="190" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0D0B09">VAULT</text>
           </g>
 
           <!-- Output marts (right column) -->
-          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">
+          <g class="hero-nodes" font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">
             <g>
               <rect x="340" y="78" width="70" height="24" fill="#1E1A16" stroke="#F5EFE3" stroke-width="0.75"/>
               <text x="375" y="93" text-anchor="middle">MART · BI</text>
@@ -115,7 +115,7 @@ if (!homeContent) {
     <div class="border-t border-rule bg-paper-deep/30">
       <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 divide-x divide-rule">
         {METRICS.map((m) => (
-          <div class="px-6 py-8 first:pl-0 md:px-8 md:py-10">
+          <div class="metric-tile px-6 py-8 first:pl-0 md:px-8 md:py-10">
             <div class="display text-4xl md:text-5xl text-oxblood leading-none">{m.value}</div>
             <p class="mt-3 text-[12px] uppercase tracking-widest font-mono text-muted leading-snug">{m.label}</p>
           </div>
@@ -126,13 +126,13 @@ if (!homeContent) {
 
   <!-- SECTION INDEX — the five-section hub -->
   <section class="max-w-6xl mx-auto px-6 py-24">
-    <div class="max-w-3xl mb-12">
+    <div class="max-w-3xl mb-12 reveal">
       <span class="eyebrow-oxblood">§ Where to start</span>
       <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
         Five ways in.
       </h2>
     </div>
-    <div class="border-t border-rule">
+    <div class="border-t border-rule reveal-group">
       {SECTIONS.map((s) => (
         <a
           href={s.href}
@@ -157,3 +157,59 @@ if (!homeContent) {
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* Load-time "assembly" sequence for the hero — pure CSS, reduced-motion safe.
+     Hidden initial states live only inside the no-preference guard. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-in { opacity: 0; animation: hero-rise 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .hero-in-1 { animation-delay: 0.05s; }
+    .hero-in-2 { animation-delay: 0.14s; }
+    .hero-in-3 { animation-delay: 0.26s; }
+    .hero-in-4 { animation-delay: 0.36s; }
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(1.5rem); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* The lineage graph draws itself in */
+    .hero-edges path {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: edge-draw 1.3s ease forwards;
+    }
+    .hero-edges path:nth-child(1) { animation-delay: 0.25s; }
+    .hero-edges path:nth-child(2) { animation-delay: 0.33s; }
+    .hero-edges path:nth-child(3) { animation-delay: 0.41s; }
+    .hero-edges path:nth-child(4) { animation-delay: 0.49s; }
+    .hero-edges path:nth-child(5) { animation-delay: 0.70s; }
+    .hero-edges path:nth-child(6) { animation-delay: 0.78s; }
+    .hero-edges path:nth-child(7) { animation-delay: 0.86s; }
+    @keyframes edge-draw { to { stroke-dashoffset: 0; } }
+
+    /* Source + mart nodes pop in, staggered */
+    .hero-nodes > g,
+    .hero-hub {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: node-pop 0.55s ease both;
+    }
+    .hero-nodes > g:nth-child(1) { animation-delay: 0.18s; }
+    .hero-nodes > g:nth-child(2) { animation-delay: 0.28s; }
+    .hero-nodes > g:nth-child(3) { animation-delay: 0.38s; }
+    .hero-nodes > g:nth-child(4) { animation-delay: 0.48s; }
+    .hero-hub { animation-delay: 0.58s; }
+    @keyframes node-pop {
+      from { opacity: 0; transform: scale(0.86); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Metric strip rises in last */
+    .metric-tile { opacity: 0; animation: hero-rise 0.7s ease both; }
+    .metric-tile:nth-child(1) { animation-delay: 0.55s; }
+    .metric-tile:nth-child(2) { animation-delay: 0.64s; }
+    .metric-tile:nth-child(3) { animation-delay: 0.73s; }
+    .metric-tile:nth-child(4) { animation-delay: 0.82s; }
+  }
+</style>

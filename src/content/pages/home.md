@@ -1,9 +1,6 @@
 ---
 title: "Data Engineering Architecture & Design"
-description: "Architecting zero-maintenance enterprise dimensional fabrics and resilient data systems."
+description: "We turn slow, fragile, expensive data platforms into infrastructure your team owns outright — faster reporting, lower compute bills, and pipelines that don't break overnight."
 ---
 
-We engineer high-performance data systems for organizations that cannot afford data latency, system drift, or architectural bloatedness. We replace generic IT consulting frameworks with precise, version-controlled analytics infrastructure.
-
-### Our Approach
-We work exclusively with modern, highly validated environments. We treat data pipelines as compiled software: tested, peer-reviewed, and continuously monitored.
+Enterprise data infrastructure that turns the data unique to your business — customers, markets, operations — into a fast, trusted, fully owned foundation. The kind every analytics and AI ambition quietly depends on.

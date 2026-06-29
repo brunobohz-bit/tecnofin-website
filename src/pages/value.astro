@@ -1,0 +1,166 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { VALUE_OUTCOMES, BEFORE_AFTER, STAKEHOLDERS } from '../config/site';
+
+const page = await getEntry('pages', 'value');
+if (!page) throw new Error('Unable to locate value.md in content layer.');
+const { Content } = await render(page);
+---
+
+<BaseLayout title={page.data.title} description={page.data.description}>
+  <!-- THE SHIFT / THE CATCH -->
+  <section class="border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 pt-24 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+      <div class="lg:col-span-8">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="rule-oxblood"></span>
+          <span class="eyebrow-oxblood">§ Business Value</span>
+        </div>
+        <h1 class="display text-[2.5rem] sm:text-6xl lg:text-[4.5rem] leading-[1.0] tracking-tight">
+          {page.data.title}
+        </h1>
+      </div>
+      <div class="lg:col-span-4">
+        <p class="font-mono text-[11px] uppercase tracking-widest text-muted leading-relaxed">
+          The opportunity is AI. <br/> The constraint is data. <br/> The edge is yours.
+        </p>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-6 pb-24">
+      <div class="max-w-3xl prose-editorial
+                  prose-p:first-of-type:first-letter:font-display
+                  prose-p:first-of-type:first-letter:text-[3.75rem]
+                  prose-p:first-of-type:first-letter:float-left
+                  prose-p:first-of-type:first-letter:mr-3
+                  prose-p:first-of-type:first-letter:leading-[0.85]
+                  prose-p:first-of-type:first-letter:text-oxblood">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FOUNDATION — bridge from data infrastructure to AI-ready -->
+  <section class="border-b border-rule bg-paper-deep/30">
+    <div class="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+      <div class="md:col-span-4">
+        <span class="eyebrow-oxblood">§ The foundation</span>
+        <h2 class="display text-4xl md:text-5xl mt-4 leading-[1.05]">
+          No model outperforms its inputs.
+        </h2>
+        <span class="rule-oxblood mt-6"></span>
+      </div>
+      <div class="md:col-span-8">
+        <p class="font-serif text-ink-soft text-[1.0625rem] leading-relaxed max-w-2xl">
+          An AI strategy is only as good as the data underneath it. Point a model at slow,
+          untraceable, half-broken pipelines and it will produce confident nonsense at scale.
+          Our work is the unglamorous part that makes the glamorous part possible: turning the
+          data that makes you unique into a foundation that is fast, trusted, governed, and
+          owned — so everything you build on top of it can be trusted too.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOME BLOCKS -->
+  <section class="max-w-6xl mx-auto px-6">
+    <div class="py-14">
+      <span class="eyebrow-oxblood">§ What changes</span>
+    </div>
+    {VALUE_OUTCOMES.map((o) => (
+      <article class="border-t border-rule py-14 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
+        <div class="md:col-span-3">
+          <div class="display text-6xl md:text-7xl text-oxblood leading-none">{o.metric}</div>
+        </div>
+        <div class="md:col-span-9">
+          <h3 class="font-serif text-2xl md:text-3xl leading-snug text-ink mb-6">{o.title}</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl mb-6">
+            <div class="flex gap-3">
+              <span class="eyebrow mt-1 shrink-0">Before</span>
+              <p class="text-[15px] text-muted leading-relaxed font-serif">{o.before}</p>
+            </div>
+            <div class="flex gap-3">
+              <span class="eyebrow-oxblood mt-1 shrink-0">After</span>
+              <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{o.after}</p>
+            </div>
+          </div>
+          <p class="text-[15px] text-ink-soft leading-relaxed font-serif max-w-2xl border-l-2 border-rule pl-5">
+            {o.consequence}
+          </p>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <!-- BEFORE / WITH-US LEDGER -->
+  <section class="border-t border-rule bg-paper-deep/30">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <div class="max-w-3xl mb-14">
+        <span class="eyebrow-oxblood">§ The ledger</span>
+        <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
+          The same data. A different business.
+        </h2>
+      </div>
+      <div class="border border-rule">
+        <div class="grid grid-cols-2 border-b border-rule">
+          <div class="px-6 py-4 border-r border-rule">
+            <span class="eyebrow">Without the foundation</span>
+          </div>
+          <div class="px-6 py-4">
+            <span class="eyebrow-oxblood">With Tecnofin</span>
+          </div>
+        </div>
+        {BEFORE_AFTER.map((row, i) => (
+          <div class={`grid grid-cols-2 ${i < BEFORE_AFTER.length - 1 ? 'border-b border-rule' : ''}`}>
+            <div class="px-6 py-6 border-r border-rule flex items-center">
+              <p class="font-serif text-[15px] md:text-base text-muted leading-snug">{row.before}</p>
+            </div>
+            <div class="px-6 py-6 flex items-center gap-3">
+              <span class="text-oxblood shrink-0" aria-hidden="true">→</span>
+              <p class="font-serif text-[15px] md:text-base text-ink leading-snug">{row.after}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO FEELS THE VALUE -->
+  <section class="border-t border-rule">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <div class="max-w-3xl mb-14">
+        <span class="eyebrow-oxblood">§ Who feels it</span>
+        <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
+          One foundation. Every seat at the table.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule">
+        {STAKEHOLDERS.map((s) => (
+          <article class="bg-paper p-8 md:p-10 flex flex-col gap-4 min-h-[180px]">
+            <h3 class="font-mono text-[12px] uppercase tracking-widest text-oxblood">{s.role}</h3>
+            <p class="font-serif text-lg md:text-xl text-ink-soft leading-snug mt-auto">{s.cares}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="border-t border-rule bg-paper-deep/40">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+      <p class="display text-4xl md:text-5xl text-ink max-w-3xl leading-[1.05]">
+        The AI opportunity won't wait for your data to catch up.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="/contact" class="btn-oxblood">
+          Start a two-week build
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="/expertise" class="btn-ghost">
+          See how we build it
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

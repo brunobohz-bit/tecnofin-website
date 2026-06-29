@@ -45,18 +45,19 @@ const cases = (await getCollection('successCases'))
           </div>
         </div>
 
-        <!-- Challenge -->
+        <!-- Before -->
         <div class="md:col-span-4">
-          <p class="eyebrow mb-4">Challenge</p>
-          <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{c.data.challenge}</p>
+          <p class="eyebrow mb-4">Before</p>
+          <p class="text-[15px] text-muted leading-relaxed font-serif">{c.data.challenge}</p>
         </div>
 
-        <!-- Result with big metric -->
+        <!-- Outcome metric + business result -->
         <div class="md:col-span-5 md:border-l md:border-rule md:pl-10">
           <p class="eyebrow-oxblood mb-4">Outcome</p>
           <div class="display text-6xl md:text-7xl text-oxblood leading-none">{c.data.metric}</div>
           <p class="mt-2 text-[11px] uppercase tracking-widest font-mono text-muted">{c.data.metricLabel}</p>
-          <p class="mt-6 font-serif text-lg text-ink leading-snug">{c.data.result}</p>
+          <p class="eyebrow mt-8 mb-3">Business result</p>
+          <p class="font-serif text-lg text-ink leading-snug">{c.data.result}</p>
         </div>
       </article>
     ))}

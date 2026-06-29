@@ -22,8 +22,9 @@ const isActive = (href: string) => {
 };
 
 const nav = [
+  { href: '/value', label: 'Business Value' },
   { href: '/expertise', label: 'Expertise' },
-  { href: '/dna', label: 'DNA' },
+  { href: '/dna', label: 'How We Work' },
   { href: '/success-cases', label: 'Success Cases' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -76,7 +77,7 @@ const expertiseLinks = (await getCollection('expertise'))
         </nav>
         <div class="flex items-center gap-3">
           <a href="/contact" class="btn-oxblood">
-            Start a project
+            Start a two-week build
             <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -97,7 +98,7 @@ const expertiseLinks = (await getCollection('expertise'))
         </p>
         <div class="mt-10 flex flex-wrap items-center gap-4">
           <a href="/contact" class="btn-oxblood">
-            Request an engagement
+            Start a two-week build
             <span aria-hidden="true">→</span>
           </a>
           <a href="mailto:hello@tecnofin.io" class="btn-ghost">hello@tecnofin.io</a>
@@ -126,7 +127,8 @@ const expertiseLinks = (await getCollection('expertise'))
           <div class="md:col-span-3">
             <p class="eyebrow mb-4">Firm</p>
             <ul class="flex flex-col gap-2 text-ink-soft">
-              <li><a href="/dna" class="hover:text-oxblood transition-colors">DNA & Philosophy</a></li>
+              <li><a href="/value" class="hover:text-oxblood transition-colors">Business Value</a></li>
+              <li><a href="/dna" class="hover:text-oxblood transition-colors">How We Work</a></li>
               <li><a href="/success-cases" class="hover:text-oxblood transition-colors">Success Cases</a></li>
               <li><a href="/contact" class="hover:text-oxblood transition-colors">Contact</a></li>
             </ul>

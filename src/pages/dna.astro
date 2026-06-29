@@ -1,6 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { PRINCIPLES, PROCESS } from '../config/site';
 
 const dnaContent = await getEntry('pages', 'dna');
 if (!dnaContent) {
@@ -16,7 +17,7 @@ const { Content } = await render(dnaContent);
       <div class="md:col-span-8">
         <div class="flex items-center gap-3 mb-6">
           <span class="rule-oxblood"></span>
-          <span class="eyebrow-oxblood">§ Corporate values</span>
+          <span class="eyebrow-oxblood">§ How we work</span>
         </div>
         <h1 class="display text-5xl md:text-7xl leading-[0.98]">
           {dnaContent.data.title}
@@ -24,26 +25,97 @@ const { Content } = await render(dnaContent);
       </div>
       <div class="md:col-span-4">
         <p class="font-mono text-[11px] uppercase tracking-widest text-muted">
-          A short field manual <br/> for how we work.
+          A short field manual <br/> for how we operate.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Editorial body — single column with drop-cap & oxblood heading rules -->
-  <section class="max-w-3xl mx-auto px-6 py-24">
-    <div class="prose-editorial
-                prose-p:first-of-type:first-letter:font-display
-                prose-p:first-of-type:first-letter:text-[4rem]
-                prose-p:first-of-type:first-letter:float-left
-                prose-p:first-of-type:first-letter:mr-3
-                prose-p:first-of-type:first-letter:leading-[0.85]
-                prose-p:first-of-type:first-letter:text-oxblood
-                prose-headings:mt-12
-                prose-headings:mb-4
-                prose-h2:text-3xl
-                prose-h3:text-2xl">
-      <Content />
+  <!-- Operating Principles — three columns (relocated from home) -->
+  <section class="border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <div class="max-w-3xl mb-16">
+        <span class="eyebrow-oxblood">§ Operating principles</span>
+        <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
+          Three rules we will not compromise on.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-rule">
+        {PRINCIPLES.map((p) => (
+          <article class="bg-paper p-8 md:p-10 flex flex-col gap-4 min-h-[260px]">
+            <div class="index-number text-2xl">{p.index}</div>
+            <h3 class="font-serif text-2xl leading-snug text-ink">{p.title}</h3>
+            <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif mt-auto">{p.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Structural beliefs — editorial body from dna.md -->
+  <section class="border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div class="md:col-span-4">
+        <span class="eyebrow-oxblood">§ Structural beliefs</span>
+        <h2 class="display text-3xl md:text-4xl mt-4 leading-[1.05]">
+          What we refuse to do.
+        </h2>
+        <span class="rule-oxblood mt-6"></span>
+      </div>
+      <div class="md:col-span-8">
+        <div class="prose-editorial
+                    prose-p:first-of-type:first-letter:font-display
+                    prose-p:first-of-type:first-letter:text-[3.75rem]
+                    prose-p:first-of-type:first-letter:float-left
+                    prose-p:first-of-type:first-letter:mr-3
+                    prose-p:first-of-type:first-letter:leading-[0.85]
+                    prose-p:first-of-type:first-letter:text-oxblood">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagement process timeline -->
+  <section class="border-b border-rule bg-paper-deep/30">
+    <div class="max-w-6xl mx-auto px-6 py-24">
+      <div class="max-w-3xl mb-16">
+        <span class="eyebrow-oxblood">§ How an engagement runs</span>
+        <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
+          Proof first. Then production. Then it's yours.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-rule">
+        {PROCESS.map((p) => (
+          <article class="bg-paper p-8 md:p-10 flex flex-col gap-5 min-h-[280px]">
+            <div class="flex items-baseline gap-3">
+              <span class="index-number text-3xl">{p.step}</span>
+              <span class="rule-oxblood"></span>
+            </div>
+            <h3 class="font-serif text-2xl leading-snug text-ink">{p.phase}</h3>
+            <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif mt-auto">{p.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section class="border-b border-rule">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+      <p class="display text-4xl md:text-5xl text-ink max-w-3xl leading-[1.05]">
+        The fastest way to see how we work is to watch us build.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="/contact" class="btn-oxblood">
+          Start a two-week build
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="/success-cases" class="btn-ghost">
+          See the outcomes
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

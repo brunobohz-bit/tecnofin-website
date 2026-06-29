@@ -1,13 +1,12 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { METRICS, PRINCIPLES } from '../config/site';
+import { METRICS, SECTIONS } from '../config/site';
 
 const homeContent = await getEntry('pages', 'home');
 if (!homeContent) {
   throw new Error("Unable to locate home.md in content layer.");
 }
-const { Content } = await render(homeContent);
 ---
 
 <BaseLayout title={homeContent.data.title} description={homeContent.data.description}>
@@ -28,7 +27,7 @@ const { Content } = await render(homeContent);
         </p>
         <div class="mt-10 flex flex-wrap items-center gap-4">
           <a href="/contact" class="btn-oxblood">
-            Request an engagement
+            Start a two-week build
             <span aria-hidden="true">→</span>
           </a>
           <a href="/expertise" class="btn-ghost">
@@ -125,46 +124,36 @@ const { Content } = await render(homeContent);
     </div>
   </section>
 
-  <!-- EDITORIAL SPLIT — Architectural focus -->
-  <section class="max-w-6xl mx-auto px-6 py-24 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-12">
-    <div class="md:col-span-4">
-      <span class="eyebrow-oxblood">§ Architectural Focus</span>
-      <h2 class="display text-4xl md:text-5xl mt-4 leading-[1.05]">
-        Zero-drift platforms.
+  <!-- SECTION INDEX — the five-section hub -->
+  <section class="max-w-6xl mx-auto px-6 py-24">
+    <div class="max-w-3xl mb-12">
+      <span class="eyebrow-oxblood">§ Where to start</span>
+      <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
+        Five ways in.
       </h2>
-      <span class="rule-oxblood mt-6"></span>
     </div>
-    <div class="md:col-span-8">
-      <div class="prose-editorial
-                  prose-p:first-of-type:first-letter:font-display
-                  prose-p:first-of-type:first-letter:text-[3.75rem]
-                  prose-p:first-of-type:first-letter:float-left
-                  prose-p:first-of-type:first-letter:mr-3
-                  prose-p:first-of-type:first-letter:leading-[0.85]
-                  prose-p:first-of-type:first-letter:text-oxblood">
-        <Content />
-      </div>
-    </div>
-  </section>
-
-  <!-- PRINCIPLES — three columns -->
-  <section class="border-t border-rule">
-    <div class="max-w-6xl mx-auto px-6 py-24">
-      <div class="max-w-3xl mb-16">
-        <span class="eyebrow-oxblood">§ Operating Principles</span>
-        <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
-          Three rules we will not compromise on.
-        </h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-rule">
-        {PRINCIPLES.map((p) => (
-          <article class="bg-paper p-8 md:p-10 flex flex-col gap-4 min-h-[260px]">
-            <div class="index-number text-2xl">{p.index}</div>
-            <h3 class="font-serif text-2xl leading-snug text-ink">{p.title}</h3>
-            <p class="text-[14.5px] text-ink-soft leading-relaxed font-serif mt-auto">{p.body}</p>
-          </article>
-        ))}
-      </div>
+    <div class="border-t border-rule">
+      {SECTIONS.map((s) => (
+        <a
+          href={s.href}
+          class="group block border-b border-rule py-8 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-baseline hover:bg-paper-warm transition-colors -mx-6 px-6"
+        >
+          <div class="md:col-span-1">
+            <span class="index-number text-2xl">{s.index}</span>
+          </div>
+          <div class="md:col-span-4">
+            <h3 class="font-serif text-2xl md:text-3xl leading-snug group-hover:text-oxblood transition-colors">
+              {s.label}
+            </h3>
+          </div>
+          <div class="md:col-span-6">
+            <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{s.teaser}</p>
+          </div>
+          <div class="md:col-span-1 flex md:justify-end">
+            <span aria-hidden="true" class="text-muted group-hover:text-oxblood transition-all group-hover:translate-x-1 text-xl">→</span>
+          </div>
+        </a>
+      ))}
     </div>
   </section>
 </BaseLayout>

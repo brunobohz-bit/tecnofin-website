@@ -123,6 +123,24 @@ elsewhere.
 Fonts: `--font-display` Instrument Serif · `--font-serif` Newsreader ·
 `--font-sans` Inter · `--font-mono` JetBrains Mono.
 
+### Motion system (pure CSS — preserves the zero-JS rule)
+
+All motion is CSS-only and **`prefers-reduced-motion` guarded**. Shared utilities live
+in `global.css`:
+
+- `.reveal` / `.reveal-group` — scroll-reveal (fade + rise) via CSS scroll-driven
+  animations (`animation-timeline: view()`). The hidden initial state sits **only** inside
+  a `@supports (animation-timeline: view())` + `prefers-reduced-motion: no-preference`
+  guard, so unsupported browsers and reduced-motion users see content immediately (progressive
+  enhancement — never leave content stuck invisible). `.reveal-group` staggers up to 5 direct
+  children via `nth-child` ranges.
+- `.depth-hero` / `.depth-bloom` — static radial gold glow behind a hero headline / focal
+  element (no motion; safe for everyone).
+- The homepage hero's load-time "assembly" sequence (headline rise, lineage-graph draw-in via
+  `stroke-dashoffset`, node pop-in, metric-strip stagger) is a **scoped `<style>` block in
+  `index.astro`**, also fully reduced-motion guarded. The contact data-graph keeps its own
+  scoped animation (`bv-*`).
+
 ---
 
 ## 6. How to add content

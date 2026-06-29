@@ -32,7 +32,7 @@ const cases = (await getCollection('successCases'))
   <!-- Case Cards -->
   <section class="max-w-6xl mx-auto px-6">
     {cases.map((c) => (
-      <article class="border-b border-rule py-16 grid grid-cols-1 md:grid-cols-12 gap-10">
+      <article class="reveal border-b border-rule py-16 grid grid-cols-1 md:grid-cols-12 gap-10">
         <!-- Index + Meta -->
         <div class="md:col-span-3">
           <span class="index-number text-4xl">{c.data.index}</span>

@@ -32,7 +32,7 @@
   --color-oxblood-soft: #E2C070;
   --color-rule: #2E2922;
   --color-rule-soft: #3A302A;
-  --color-muted: #8A7A6A;
+  --color-muted: #9A8A78;
   --color-muted-soft: #7A6A5A;
 
   /* Legacy aliases retained so existing class names keep working */
@@ -61,6 +61,14 @@
   ::selection {
     background: var(--color-oxblood);
     color: var(--color-ink);
+  }
+
+  /* Visible keyboard focus across all interactive elements (low specificity
+     so component styles can override if ever needed). */
+  :where(a, button, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid var(--color-oxblood);
+    outline-offset: 3px;
+    border-radius: 3px;
   }
 }
 

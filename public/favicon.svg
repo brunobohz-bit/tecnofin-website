@@ -1,4 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="4" fill="#111111"/>
-  <text x="7" y="23" font-family="Georgia, serif" font-size="18" font-weight="500" fill="#FAF9F6">N</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" fill="none" role="img" aria-label="Tecnofin">
+  <!-- Orange icon square — exact brand color #FE8B20 -->
+  <rect width="44" height="44" rx="6" fill="#FE8B20"/>
+
+  <!-- White bubble-node cluster — matches the main logo mark -->
+  <circle cx="17.1" cy="6.7"  r="2.5" fill="white"/>
+  <circle cx="24.0" cy="9.5"  r="3.0" fill="white"/>
+  <circle cx="17.5" cy="17.0" r="3.7" fill="white"/>
+  <circle cx="26.5" cy="17.0" r="3.7" fill="white"/>
+  <circle cx="11.5" cy="25.0" r="3.1" fill="white"/>
+  <circle cx="22.0" cy="25.5" r="3.7" fill="white"/>
+  <circle cx="37.0" cy="23.5" r="2.6" fill="white"/>
+  <circle cx="31.0" cy="27.5" r="3.1" fill="white"/>
+  <circle cx="12.5" cy="33.0" r="2.5" fill="white"/>
 </svg>

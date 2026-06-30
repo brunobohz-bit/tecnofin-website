@@ -3,7 +3,7 @@
 Single source of truth for AI agents working in this repo. If this file and
 `README.md` ever disagree, **trust this file** — it is verified against the code.
 
-> Last verified against the codebase: 2026-06-29.
+> Last verified against the codebase: 2026-06-30.
 
 ---
 
@@ -30,7 +30,10 @@ A code change and its documentation update here are a single unit of work.
 
 ## 1. What this project is
 
-A static, **zero client-side JS** corporate website.
+A **static-first** corporate website built with Astro SSG. The baseline ships
+**no client-side JS**; interactivity is allowed only as small,
+progressively-enhancing islands under the **JavaScript policy** below — never for
+content, layout, or navigation.
 
 | Layer | Technology |
 |---|---|
@@ -45,6 +48,28 @@ A static, **zero client-side JS** corporate website.
 Commands: `npm run dev` (→ localhost:4321) · `npm run build` · `npm run preview`.
 The build **fails** on invalid frontmatter — that is the safety net. Always run
 `npm run build` after content edits.
+
+### JavaScript policy (static-first, not zero-JS)
+
+The site must render and work fully **with JavaScript disabled** — JS may only
+*enhance*, never deliver content, layout, or navigation.
+
+- **No framework runtime.** No React/Vue/Svelte hydration for content. Use
+  vanilla JS in small Astro islands (`client:idle` / `client:visible`) or one
+  deferred inline module.
+- **Budget: ≤ 6 KB gzipped of client JS across the whole site.** No
+  render-blocking scripts. Zero JS-attributable layout shift (CLS).
+- **No external / third-party scripts and no added DNS** — self-hosted only
+  (preserves the GDPR / no-external-DNS posture).
+- **Enhancement allowlist** — anything beyond this needs explicit human sign-off:
+  cursor-reactive hero glow, magnetic CTA, count-up metrics, subtle card
+  tilt/parallax, scroll progress.
+- All JS-driven motion is **`prefers-reduced-motion` guarded** and
+  **pointer-gated** (`@media (hover: hover) and (pointer: fine)`), so touch /
+  mobile keeps the clean static design.
+- Islands live in `src/scripts/` (or co-located `*.island.ts`) and are indexed in
+  §4. The pure-CSS mobile nav, scroll reveals, and hero assembly stay CSS — they
+  are **not** ported to JS.
 
 ---
 
@@ -120,17 +145,47 @@ elsewhere.
 | `--color-paper` | `#0D0B09` | Page background (near-black) |
 | `--color-ink` | `#F5EFE3` | Primary text (warm cream) |
 | `--color-ink-soft` | `#D8CFC0` | Body / secondary text |
-| `--color-oxblood` | `#D4A84B` | Accent (amber/gold — *not* red, despite the legacy name) |
+| `--color-oxblood` | `#D4A84B` | **Primary, dominant** accent (amber/gold — *not* red, despite the legacy name) |
 | `--color-rule` | `#2E2922` | Borders, dividers |
 | `--color-muted` | `#9A8A78` | Labels, captions (lifted from `#8A7A6A` for WCAG AA on warm panels) |
+| `--color-signal` | `#5AC8DA` *(tunable)* | **Subordinate** cool accent — *reserved, introduced with the hybrid pass* |
+| `--color-signal-soft` | — | Lower-opacity variant of `--color-signal` for blooms / glows |
+
+**Accent discipline.** Gold (`--color-oxblood`) stays primary and dominant. The
+cool `--color-signal` is a *highlight, not a co-brand*:
+
+- **Permitted only for:** glow / bloom, edges & hairlines on technical visuals
+  (the lineage / build graphs), active & focus states, data-flow lines.
+- **Forbidden for:** body text, headings, primary CTAs, large fills — anything
+  that competes with gold.
+- **Target ratio ≈ 5:1 gold-to-cool.** If the cyan is the first thing you notice
+  on a screen, it is overused.
+- Must hold WCAG AA wherever it carries meaning as text / UI.
 
 Fonts: `--font-display` Instrument Serif · `--font-serif` Newsreader ·
 `--font-sans` Inter · `--font-mono` JetBrains Mono.
 
-### Motion system (pure CSS — preserves the zero-JS rule)
+### Depth & elevation (introduced with the hybrid pass)
 
-All motion is CSS-only and **`prefers-reduced-motion` guarded**. Shared utilities live
-in `global.css`:
+The baseline is intentionally flat; depth is added as *restrained, named* tokens
+in `global.css` — never hardcoded per-component. Until a token ships, no component
+may anticipate it.
+
+- **Surface tiers** — `base` (page), `raised` (cards / figures), `overlay`
+  (sticky asides). `raised` = a subtle 180° gradient (`paper-warm → paper-deep`) +
+  a 1px top-edge highlight + one soft ambient shadow.
+- **Glow / bloom budget** — blur 48–80px, opacity ceiling ~16%, only behind focal
+  elements, **never behind body text**.
+- **Shadows** — ambient and low-opacity only. No harsh / offset drop shadows, no
+  neon.
+
+### Motion system (CSS-first — static baseline preserved)
+
+All **baseline** motion is CSS-only and **`prefers-reduced-motion` guarded**.
+Optional JS-driven motion is permitted *only* under the §1 JavaScript policy
+(≤ 6 KB budget, reduced-motion guard, pointer-gating, transform/opacity-only at
+60fps — never animating layout properties). Shared CSS utilities live in
+`global.css`:
 
 - `.reveal` / `.reveal-group` — scroll-reveal (fade + rise) via CSS scroll-driven
   animations (`animation-timeline: view()`). The hidden initial state sits **only** inside

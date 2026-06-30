@@ -52,7 +52,9 @@ The build **fails** on invalid frontmatter — that is the safety net. Always ru
 ### JavaScript policy (static-first, not zero-JS)
 
 The site must render and work fully **with JavaScript disabled** — JS may only
-*enhance*, never deliver content, layout, or navigation.
+*enhance*, never deliver content, layout, or navigation. The approved motion and
+data-diagram system (§5) is **pure CSS**, so the site currently ships zero JS; the
+budget below is a ceiling for rare enhancements (e.g. count-up), not a default.
 
 - **No framework runtime.** No React/Vue/Svelte hydration for content. Use
   vanilla JS in small Astro islands (`client:idle` / `client:visible`) or one
@@ -145,39 +147,54 @@ elsewhere.
 | `--color-paper` | `#0D0B09` | Page background (near-black) |
 | `--color-ink` | `#F5EFE3` | Primary text (warm cream) |
 | `--color-ink-soft` | `#D8CFC0` | Body / secondary text |
-| `--color-oxblood` | `#D4A84B` | **Primary, dominant** accent (amber/gold — *not* red, despite the legacy name) |
+| `--color-oxblood` | `#D4A84B` | **Rare single accent** — used sparingly (see white-forward discipline); *not* red despite the legacy name |
 | `--color-rule` | `#2E2922` | Borders, dividers |
 | `--color-muted` | `#9A8A78` | Labels, captions (lifted from `#8A7A6A` for WCAG AA on warm panels) |
-| `--color-signal` | `#5AC8DA` *(tunable)* | **Subordinate** cool accent — *reserved, introduced with the hybrid pass* |
-| `--color-signal-soft` | — | Lower-opacity variant of `--color-signal` for blooms / glows |
 
-**Accent discipline.** Gold (`--color-oxblood`) stays primary and dominant. The
-cool `--color-signal` is a *highlight, not a co-brand*:
+**White-forward discipline.** Cream / white (`--color-ink`, `--color-ink-soft`)
+carries the page — structure, headings, emphasis, metric numbers, and all
+data-diagram strokes. Gold (`--color-oxblood`) is a **rare single accent**, not a
+workhorse:
 
-- **Permitted only for:** glow / bloom, edges & hairlines on technical visuals
-  (the lineage / build graphs), active & focus states, data-flow lines.
-- **Forbidden for:** body text, headings, primary CTAs, large fills — anything
-  that competes with gold.
-- **Target ratio ≈ 5:1 gold-to-cool.** If the cyan is the first thing you notice
-  on a screen, it is overused.
-- Must hold WCAG AA wherever it carries meaning as text / UI.
+- **Permitted for:** one quiet emphasis per view (a thin tick / underline, a small
+  caret) and the single "live signal" in a data diagram (e.g. one travelling
+  pulse). Small mono eyebrows may stay gold.
+- **Forbidden for:** large gold fills, gold metric numbers, gold headlines — any
+  treatment where yellow becomes the dominant colour of a screen.
+- **No third brand colour.** No cool / cyan accent — the palette is paper + ink +
+  a whisper of gold.
+- If yellow is the first thing you notice on a screen, it is overused.
 
 Fonts: `--font-display` Instrument Serif · `--font-serif` Newsreader ·
 `--font-sans` Inter · `--font-mono` JetBrains Mono.
 
-### Depth & elevation (introduced with the hybrid pass)
+### Surface — stays flat (no elevation)
 
-The baseline is intentionally flat; depth is added as *restrained, named* tokens
-in `global.css` — never hardcoded per-component. Until a token ships, no component
-may anticipate it.
+The surface language is **flat editorial** and stays that way. Depth is **not** a
+tool here:
 
-- **Surface tiers** — `base` (page), `raised` (cards / figures), `overlay`
-  (sticky asides). `raised` = a subtle 180° gradient (`paper-warm → paper-deep`) +
-  a 1px top-edge highlight + one soft ambient shadow.
-- **Glow / bloom budget** — blur 48–80px, opacity ceiling ~16%, only behind focal
-  elements, **never behind body text**.
-- **Shadows** — ambient and low-opacity only. No harsh / offset drop shadows, no
-  neon.
+- **No** gradients, glows, blooms, drop shadows, or raised / elevated cards.
+- Structure comes from **hairline borders** (`--color-rule`), generous whitespace,
+  and type hierarchy — never from shadow or glow.
+- Premium feel is earned through **precision, restraint, and motion** (below), not
+  surface treatment.
+
+### Data-diagram system (the primary "futuristic" device)
+
+"Futuristic" is expressed through **precise, animated data diagrams**, not surface
+effects. House style for every diagram (hero lineage, contact build-graph, and any
+new ones):
+
+- **Flat schematic:** thin **white / cream** strokes (`--color-ink` /
+  `--color-ink-soft`) on `--color-paper`, mono (`--font-mono`) labels, an optional
+  faint grid, generous whitespace.
+- **Gold appears once** — as the single live signal (e.g. one travelling pulse),
+  never as a structural colour.
+- **Motion is CSS-only:** a load-time **draw-in** (`stroke-dashoffset`) plus a
+  looping **pulse** (`offset-path` / dash-flow), always `prefers-reduced-motion`
+  guarded and limited to transform / opacity / stroke.
+- One diagram illustrates **one point** (lineage, schema-drift, latency,
+  ownership). Keep it sparse — clutter reads as cheap.
 
 ### Motion system (CSS-first — static baseline preserved)
 

@@ -1,0 +1,80 @@
+---
+/**
+ * LineageTrace (cap 03) — column-level lineage with a quality gate.
+ * A column is traced source → transform → gate → dashboard; the single gold
+ * signal runs the full lineage. Quality gate is the checkpoint mid-path.
+ */
+const cols = [40, 48, 56]; // three parallel column tracks
+---
+
+<figure class="lt-fig w-full" aria-hidden="true">
+  <svg viewBox="0 0 220 130" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+    <!-- Column tracks (lineage runs along the middle one) -->
+    <g class="lt-edges" fill="none" stroke="#F5EFE3" stroke-width="0.8">
+      {cols.map((y, i) => (
+        <path d={`M 28 ${y} L 192 ${y}`} opacity={i === 1 ? '0.5' : '0.22'} />
+      ))}
+    </g>
+
+    <!-- Nodes along the lineage -->
+    <g font-family="JetBrains Mono, monospace" font-size="6.5">
+      <g class="lt-node">
+        <rect x="14" y="38" width="28" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+        <text x="28" y="51" text-anchor="middle" fill="#D8CFC0">SRC</text>
+      </g>
+      <g class="lt-node">
+        <rect x="78" y="38" width="28" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+        <text x="92" y="51" text-anchor="middle" fill="#D8CFC0">ƒ(x)</text>
+      </g>
+      <!-- Quality gate -->
+      <g class="lt-node">
+        <rect x="124" y="36" width="24" height="24" fill="#0D0B09" stroke="#F5EFE3" stroke-width="1"/>
+        <text x="136" y="51" text-anchor="middle" fill="#F5EFE3">✓</text>
+        <text x="136" y="74" text-anchor="middle" font-size="6" fill="#9A8A78" letter-spacing="0.5">GATE</text>
+      </g>
+      <g class="lt-node">
+        <rect x="166" y="38" width="34" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+        <text x="183" y="51" text-anchor="middle" fill="#D8CFC0">DASH</text>
+      </g>
+    </g>
+
+    <g font-family="JetBrains Mono, monospace" font-size="6" fill="#7A6A5A" letter-spacing="1">
+      <text x="14" y="100">COLUMN-LEVEL · SOURCE → DASHBOARD</text>
+      <text x="14" y="122">FIG. 03A — LINEAGE · QUALITY GATE</text>
+    </g>
+
+    <!-- Live signal: a column traced end-to-end -->
+    <circle class="lt-pulse" r="2.4" cx="0" cy="0" fill="#D4A84B" />
+  </svg>
+</figure>
+
+<style>
+  .lt-pulse { offset-path: path('M 28 48 L 192 48'); opacity: 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .lt-edges path {
+        stroke-dasharray: 170; stroke-dashoffset: 170;
+        animation: lt-draw linear forwards; animation-timeline: view();
+      }
+      .lt-edges path:nth-child(1) { animation-range: entry 8%  cover 32%; }
+      .lt-edges path:nth-child(2) { animation-range: entry 4%  cover 28%; }
+      .lt-edges path:nth-child(3) { animation-range: entry 12% cover 36%; }
+      .lt-node {
+        opacity: 0; transform: scale(0.82);
+        transform-box: fill-box; transform-origin: center;
+        animation: lt-pop linear both; animation-timeline: view();
+        animation-range: entry 6% cover 32%;
+      }
+    }
+    .lt-pulse { animation: lt-travel 3.3s cubic-bezier(0.5,0,0.4,1) infinite; animation-delay: 0.6s; }
+  }
+
+  @keyframes lt-draw { to { stroke-dashoffset: 0; } }
+  @keyframes lt-pop { to { opacity: 1; transform: none; } }
+  @keyframes lt-travel {
+    0% { offset-distance: 0%; opacity: 0; }
+    10% { opacity: 1; } 88% { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+/**
+ * WarehouseLayers (cap 01) — layered transformation models with compute isolation.
+ * Staging → Intermediate → Mart, a single gold signal flowing down the spine,
+ * an isolated compute lane to the side. Small card-scale schematic.
+ */
+const layers = [
+  { y: 16, label: 'STAGING' },
+  { y: 52, label: 'INTERMEDIATE' },
+  { y: 88, label: 'MART' },
+];
+---
+
+<figure class="wl-fig w-full" aria-hidden="true">
+  <svg viewBox="0 0 220 130" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+    <!-- Spine -->
+    <g class="wl-edges" fill="none" stroke="#F5EFE3" stroke-width="0.9" opacity="0.4">
+      <path d="M 78 28 L 78 100" />
+    </g>
+
+    <!-- Transformation layers -->
+    <g class="wl-bars" font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing="1">
+      {layers.map((l) => (
+        <g class="wl-bar">
+          <rect x="12" y={l.y} width="132" height="24" fill="#161310" stroke="#F5EFE3" stroke-width="0.75" opacity="0.92"/>
+          <text x="24" y={l.y + 15} fill="#D8CFC0">{l.label}</text>
+          <circle cx="78" cy={l.y + 12} r="2" fill="#161310" stroke="#F5EFE3" stroke-width="0.7"/>
+        </g>
+      ))}
+    </g>
+
+    <!-- Isolated compute lane -->
+    <g class="wl-iso">
+      <line x1="162" y1="10" x2="162" y2="102" stroke="#F5EFE3" stroke-width="0.6" opacity="0.3" stroke-dasharray="3 3"/>
+      <rect x="172" y="40" width="36" height="32" fill="#0D0B09" stroke="#F5EFE3" stroke-width="0.75"/>
+      <text x="190" y="54" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#9A8A78">ISO</text>
+      <text x="190" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#9A8A78">CPU</text>
+    </g>
+
+    <g font-family="JetBrains Mono, monospace" font-size="6" fill="#7A6A5A" letter-spacing="1">
+      <text x="12" y="122">FIG. 01A — LAYERED · COMPUTE-ISOLATED</text>
+    </g>
+
+    <circle class="wl-pulse" r="2.4" cx="0" cy="0" fill="#D4A84B" />
+  </svg>
+</figure>
+
+<style>
+  .wl-pulse { offset-path: path('M 78 28 L 78 100'); opacity: 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .wl-edges path {
+        stroke-dasharray: 90; stroke-dashoffset: 90;
+        animation: wl-draw linear forwards; animation-timeline: view();
+        animation-range: entry 6% cover 32%;
+      }
+      .wl-bar, .wl-iso {
+        opacity: 0; transform: translateY(0.5rem);
+        animation: wl-rise linear both; animation-timeline: view();
+      }
+      .wl-bars > .wl-bar:nth-child(1) { animation-range: entry 4%  cover 26%; }
+      .wl-bars > .wl-bar:nth-child(2) { animation-range: entry 8%  cover 30%; }
+      .wl-bars > .wl-bar:nth-child(3) { animation-range: entry 12% cover 34%; }
+      .wl-iso { animation-range: entry 16% cover 40%; }
+    }
+    .wl-pulse { animation: wl-travel 3.2s cubic-bezier(0.5,0,0.4,1) infinite; animation-delay: 0.5s; }
+  }
+
+  @keyframes wl-draw { to { stroke-dashoffset: 0; } }
+  @keyframes wl-rise { to { opacity: 1; transform: none; } }
+  @keyframes wl-travel {
+    0% { offset-distance: 0%; opacity: 0; }
+    12% { opacity: 1; } 86% { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+</style>

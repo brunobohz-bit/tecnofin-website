@@ -3,7 +3,7 @@
 Single source of truth for AI agents working in this repo. If this file and
 `README.md` ever disagree, **trust this file** — it is verified against the code.
 
-> Last verified against the codebase: 2026-06-30.
+> Last verified against the codebase: 2026-06-30 (diagram component system added).
 
 ---
 
@@ -195,6 +195,27 @@ new ones):
   guarded and limited to transform / opacity / stroke.
 - One diagram illustrates **one point** (lineage, schema-drift, latency,
   ownership). Keep it sparse — clutter reads as cheap.
+
+Reusable diagram components live in `src/components/diagrams/` — each is a
+self-contained SVG with a scoped `<style>` (draw-in on scroll via
+`animation-timeline: view()` inside a `@supports` + reduced-motion guard, plus a
+single looping gold pulse). Current set:
+
+| Component | Illustrates | Placed on |
+|---|---|---|
+| `FoundationStack.astro` | Model rests on owned·governed·trusted·fast inputs | `/value` — "The foundation" |
+| `SchemaContract.astro` | Upstream drift absorbed at the contract; downstream stays stable | `/dna` — operating principles |
+| `EngagementArc.astro` | Build → harden → handover; ownership transfers to the client | `/dna` — engagement process |
+| `WarehouseLayers.astro` | Layered transformation (staging→int→mart) + compute isolation | `/expertise` — capability 01 card |
+| `VaultModel.astro` | Data Vault hub · link · satellite absorbing source change | `/expertise` — capability 02 card |
+| `LineageTrace.astro` | Column-level lineage source→dashboard with a quality gate | `/expertise` — capability 03 card |
+
+The `/expertise` index maps a small card-scale diagram to each capability by
+`capIndex` (`01`/`02`/`03`).
+
+The home hero lineage graph is inlined in `src/pages/index.astro` (not yet a
+component). The `/contact` build-graph still uses the older gold-heavy treatment
++ `.depth-bloom` and is pending a white-forward rework.
 
 ### Motion system (CSS-first — static baseline preserved)
 

@@ -1,0 +1,102 @@
+---
+/**
+ * FoundationStack — "No model outperforms its inputs."
+ * A model node resting on four foundation layers; a single gold signal
+ * rises from the base up through the layers into the model.
+ * Flat white-stroke schematic, CSS-only motion, reduced-motion guarded.
+ */
+const layers = [
+  { y: 118, label: 'OWNED' },
+  { y: 158, label: 'GOVERNED' },
+  { y: 198, label: 'TRUSTED' },
+  { y: 238, label: 'FAST' },
+] as const;
+---
+
+<figure class="fs-fig relative w-full">
+  <svg viewBox="0 0 380 320" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <pattern id="fs-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2E2922" stroke-width="0.5" opacity="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="380" height="320" fill="url(#fs-grid)" />
+
+    <!-- Spine: base → model -->
+    <g class="fs-edges" fill="none" stroke="#F5EFE3" stroke-width="1" opacity="0.4">
+      <path d="M 190 255 L 190 88" />
+    </g>
+
+    <!-- Foundation layers (bottom → top) -->
+    <g class="fs-bars" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5">
+      {layers.map((l) => (
+        <g class="fs-bar">
+          <rect x="40" y={l.y} width="300" height="34" fill="#161310" stroke="#F5EFE3" stroke-width="0.75" opacity="0.92"/>
+          <text x="58" y={l.y + 21} fill="#D8CFC0">{l.label}</text>
+          <circle cx="190" cy={l.y + 17} r="2.4" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+        </g>
+      ))}
+    </g>
+
+    <!-- Model node -->
+    <g class="fs-model">
+      <rect x="120" y="40" width="140" height="48" fill="#0D0B09" stroke="#F5EFE3" stroke-width="1"/>
+      <text x="190" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#F5EFE3" letter-spacing="2">MODELS · AI</text>
+      <text x="190" y="77" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="#9A8A78" letter-spacing="1.5">DECISIONS · FEATURES</text>
+    </g>
+
+    <!-- Legend -->
+    <g font-family="JetBrains Mono, monospace" font-size="7" fill="#7A6A5A" letter-spacing="1.2">
+      <text x="40" y="300">FIG. 02 — DATA FOUNDATION</text>
+      <text x="40" y="312">OWNED · GOVERNED · TRUSTED · FAST → AI</text>
+    </g>
+
+    <!-- Single live signal: input rising into the model -->
+    <circle class="fs-pulse" r="3" cx="0" cy="0" fill="#D4A84B" />
+  </svg>
+</figure>
+
+<style>
+  .fs-pulse {
+    offset-path: path('M 190 255 L 190 88');
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .fs-edges path {
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+        animation: fs-draw linear forwards;
+        animation-timeline: view();
+        animation-range: entry 8% cover 34%;
+      }
+      .fs-bar, .fs-model {
+        opacity: 0;
+        transform: translateY(0.8rem);
+        animation: fs-rise linear both;
+        animation-timeline: view();
+      }
+      .fs-bars > .fs-bar:nth-child(1) { animation-range: entry 16% cover 40%; }
+      .fs-bars > .fs-bar:nth-child(2) { animation-range: entry 12% cover 36%; }
+      .fs-bars > .fs-bar:nth-child(3) { animation-range: entry 8%  cover 32%; }
+      .fs-bars > .fs-bar:nth-child(4) { animation-range: entry 4%  cover 28%; }
+      .fs-model { animation-range: entry 20% cover 46%; }
+    }
+
+    /* Looping live signal */
+    .fs-pulse {
+      animation: fs-pulse-travel 3.4s cubic-bezier(0.5, 0, 0.4, 1) infinite;
+      animation-delay: 0.6s;
+    }
+  }
+
+  @keyframes fs-draw { to { stroke-dashoffset: 0; } }
+  @keyframes fs-rise { to { opacity: 1; transform: none; } }
+  @keyframes fs-pulse-travel {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    10%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+</style>

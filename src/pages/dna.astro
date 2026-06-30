@@ -2,6 +2,8 @@
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { PRINCIPLES, PROCESS } from '../config/site';
+import SchemaContract from '../components/diagrams/SchemaContract.astro';
+import EngagementArc from '../components/diagrams/EngagementArc.astro';
 
 const dnaContent = await getEntry('pages', 'dna');
 if (!dnaContent) {
@@ -49,6 +51,20 @@ const { Content } = await render(dnaContent);
           </article>
         ))}
       </div>
+
+      <!-- Figure: schema-as-contract absorbs upstream drift -->
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-12 gap-10 items-center reveal">
+        <div class="md:col-span-7">
+          <SchemaContract />
+        </div>
+        <div class="md:col-span-5">
+          <span class="eyebrow">Fig. 03 — Schema is contract</span>
+          <p class="mt-4 font-serif text-ink-soft text-[1.0625rem] leading-relaxed max-w-md">
+            Sources drift. We absorb that drift at the contract layer, so the
+            interface your downstream consumers depend on never breaks beneath them.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -84,6 +100,9 @@ const { Content } = await render(dnaContent);
         <h2 class="display text-3xl md:text-5xl mt-4 leading-[1.05]">
           Proof first. Then production. Then it's yours.
         </h2>
+      </div>
+      <div class="mb-16 reveal">
+        <EngagementArc />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-rule reveal-group">
         {PROCESS.map((p) => (

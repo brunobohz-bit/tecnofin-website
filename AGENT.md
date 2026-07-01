@@ -42,7 +42,7 @@ content, layout, or navigation.
 | Typography | `@tailwindcss/typography` (drives `prose` classes) |
 | Content | Astro Content Layer API + `glob` loader, validated by Zod (`src/content.config.ts`) |
 | MDX / Sitemap | `@astrojs/mdx`, `@astrojs/sitemap` |
-| Fonts | **Self-hosted** via `@fontsource` (Inter, Newsreader, Instrument Serif, JetBrains Mono) — no external DNS |
+| Fonts | **Self-hosted** via `@fontsource` (Space Grotesk, Newsreader, Inter, JetBrains Mono) — no external DNS |
 | Canonical site | `https://tecnofin.io` (`astro.config.mjs`) |
 
 Commands: `npm run dev` (→ localhost:4321) · `npm run build` · `npm run preview`.
@@ -165,8 +165,11 @@ workhorse:
   a whisper of gold.
 - If yellow is the first thing you notice on a screen, it is overused.
 
-Fonts: `--font-display` Instrument Serif · `--font-serif` Newsreader ·
-`--font-sans` Inter · `--font-mono` JetBrains Mono.
+Fonts: `--font-display` **Space Grotesk** (headlines/`.display`, weight 500) ·
+`--font-serif` **Newsreader** (body copy + card subheads — a light reading serif
+paired with the grotesk display) · `--font-sans` Inter (UI/buttons) · `--font-mono`
+JetBrains Mono. Body reading sizes: prose/lede `text-[1.25rem]`, secondary/card
+body `text-[17px]`; mono eyebrows/captions stay 11–13px.
 
 ### Surface — stays flat (no elevation)
 

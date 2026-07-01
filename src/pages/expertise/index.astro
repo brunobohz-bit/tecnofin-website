@@ -35,7 +35,7 @@ const DIAGRAMS: Record<string, any> = {
         </h1>
       </div>
       <div class="md:col-span-5 md:pt-4">
-        <div class="prose prose-neutral max-w-none text-ink-soft text-[1.0625rem] leading-relaxed font-serif">
+        <div class="prose prose-neutral max-w-none text-ink-soft text-[1.25rem] leading-relaxed font-serif">
           <Content />
         </div>
       </div>
@@ -63,9 +63,9 @@ const DIAGRAMS: Record<string, any> = {
           </h2>
           <p class="flex gap-3 max-w-xl mb-4">
             <span class="eyebrow-oxblood mt-1 shrink-0">Risk</span>
-            <span class="text-[15px] text-ink leading-relaxed font-serif">{cap.data.ctaCopy}</span>
+            <span class="text-[17px] text-ink leading-relaxed font-serif">{cap.data.ctaCopy}</span>
           </p>
-          <p class="text-[14.5px] text-muted leading-relaxed max-w-xl font-serif">{cap.data.summary}</p>
+          <p class="text-[17px] text-muted leading-relaxed max-w-xl font-serif">{cap.data.summary}</p>
           <div class="mt-5 flex flex-wrap gap-2">
             {cap.data.tags.map((tag) => (
               <span class="stack-chip">{tag}</span>

@@ -50,7 +50,7 @@ const { Content } = await render(page);
           No model outperforms its inputs.
         </h2>
         <span class="rule-oxblood mt-6"></span>
-        <p class="mt-8 font-serif text-ink-soft text-[1.0625rem] leading-relaxed max-w-xl">
+        <p class="mt-8 font-serif text-ink-soft text-[1.25rem] leading-relaxed max-w-xl">
           An AI strategy is only as good as the data underneath it. Point a model at slow,
           untraceable, half-broken pipelines and it will produce confident nonsense at scale.
           Our work is the unglamorous part that makes the glamorous part possible: turning the
@@ -79,14 +79,14 @@ const { Content } = await render(page);
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4 max-w-3xl mb-6">
             <div class="flex gap-3">
               <span class="eyebrow mt-1 shrink-0">Before</span>
-              <p class="text-[15px] text-muted leading-relaxed font-serif">{o.before}</p>
+              <p class="text-[17px] text-muted leading-relaxed font-serif">{o.before}</p>
             </div>
             <div class="flex gap-3">
               <span class="eyebrow-oxblood mt-1 shrink-0">After</span>
-              <p class="text-[15px] text-ink-soft leading-relaxed font-serif">{o.after}</p>
+              <p class="text-[17px] text-ink-soft leading-relaxed font-serif">{o.after}</p>
             </div>
           </div>
-          <p class="text-[15px] text-ink-soft leading-relaxed font-serif max-w-2xl border-l-2 border-rule pl-5">
+          <p class="text-[17px] text-ink-soft leading-relaxed font-serif max-w-2xl border-l-2 border-rule pl-5">
             {o.consequence}
           </p>
         </div>
@@ -115,11 +115,11 @@ const { Content } = await render(page);
         {BEFORE_AFTER.map((row, i) => (
           <div class={`grid grid-cols-2 ${i < BEFORE_AFTER.length - 1 ? 'border-b border-rule' : ''}`}>
             <div class="px-6 py-6 border-r border-rule flex items-center">
-              <p class="font-serif text-[15px] md:text-base text-muted leading-snug">{row.before}</p>
+              <p class="font-serif text-[17px] md:text-base text-muted leading-snug">{row.before}</p>
             </div>
             <div class="px-6 py-6 flex items-center gap-3">
               <span class="text-oxblood shrink-0" aria-hidden="true">→</span>
-              <p class="font-serif text-[15px] md:text-base text-ink leading-snug">{row.after}</p>
+              <p class="font-serif text-[17px] md:text-base text-ink leading-snug">{row.after}</p>
             </div>
           </div>
         ))}

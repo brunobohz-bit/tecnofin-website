@@ -3,7 +3,7 @@
 Single source of truth for AI agents working in this repo. If this file and
 `README.md` ever disagree, **trust this file** — it is verified against the code.
 
-> Last verified against the codebase: 2026-06-29.
+> Last verified against the codebase: 2026-06-30 (diagram component system added).
 
 ---
 
@@ -30,7 +30,10 @@ A code change and its documentation update here are a single unit of work.
 
 ## 1. What this project is
 
-A static, **zero client-side JS** corporate website.
+A **static-first** corporate website built with Astro SSG. The baseline ships
+**no client-side JS**; interactivity is allowed only as small,
+progressively-enhancing islands under the **JavaScript policy** below — never for
+content, layout, or navigation.
 
 | Layer | Technology |
 |---|---|
@@ -45,6 +48,30 @@ A static, **zero client-side JS** corporate website.
 Commands: `npm run dev` (→ localhost:4321) · `npm run build` · `npm run preview`.
 The build **fails** on invalid frontmatter — that is the safety net. Always run
 `npm run build` after content edits.
+
+### JavaScript policy (static-first, not zero-JS)
+
+The site must render and work fully **with JavaScript disabled** — JS may only
+*enhance*, never deliver content, layout, or navigation. The approved motion and
+data-diagram system (§5) is **pure CSS**, so the site currently ships zero JS; the
+budget below is a ceiling for rare enhancements (e.g. count-up), not a default.
+
+- **No framework runtime.** No React/Vue/Svelte hydration for content. Use
+  vanilla JS in small Astro islands (`client:idle` / `client:visible`) or one
+  deferred inline module.
+- **Budget: ≤ 6 KB gzipped of client JS across the whole site.** No
+  render-blocking scripts. Zero JS-attributable layout shift (CLS).
+- **No external / third-party scripts and no added DNS** — self-hosted only
+  (preserves the GDPR / no-external-DNS posture).
+- **Enhancement allowlist** — anything beyond this needs explicit human sign-off:
+  cursor-reactive hero glow, magnetic CTA, count-up metrics, subtle card
+  tilt/parallax, scroll progress.
+- All JS-driven motion is **`prefers-reduced-motion` guarded** and
+  **pointer-gated** (`@media (hover: hover) and (pointer: fine)`), so touch /
+  mobile keeps the clean static design.
+- Islands live in `src/scripts/` (or co-located `*.island.ts`) and are indexed in
+  §4. The pure-CSS mobile nav, scroll reveals, and hero assembly stay CSS — they
+  are **not** ported to JS.
 
 ---
 
@@ -120,17 +147,83 @@ elsewhere.
 | `--color-paper` | `#0D0B09` | Page background (near-black) |
 | `--color-ink` | `#F5EFE3` | Primary text (warm cream) |
 | `--color-ink-soft` | `#D8CFC0` | Body / secondary text |
-| `--color-oxblood` | `#D4A84B` | Accent (amber/gold — *not* red, despite the legacy name) |
+| `--color-oxblood` | `#D4A84B` | **Rare single accent** — used sparingly (see white-forward discipline); *not* red despite the legacy name |
 | `--color-rule` | `#2E2922` | Borders, dividers |
 | `--color-muted` | `#9A8A78` | Labels, captions (lifted from `#8A7A6A` for WCAG AA on warm panels) |
+
+**White-forward discipline.** Cream / white (`--color-ink`, `--color-ink-soft`)
+carries the page — structure, headings, emphasis, metric numbers, and all
+data-diagram strokes. Gold (`--color-oxblood`) is a **rare single accent**, not a
+workhorse:
+
+- **Permitted for:** one quiet emphasis per view (a thin tick / underline, a small
+  caret) and the single "live signal" in a data diagram (e.g. one travelling
+  pulse). Small mono eyebrows may stay gold.
+- **Forbidden for:** large gold fills, gold metric numbers, gold headlines — any
+  treatment where yellow becomes the dominant colour of a screen.
+- **No third brand colour.** No cool / cyan accent — the palette is paper + ink +
+  a whisper of gold.
+- If yellow is the first thing you notice on a screen, it is overused.
 
 Fonts: `--font-display` Instrument Serif · `--font-serif` Newsreader ·
 `--font-sans` Inter · `--font-mono` JetBrains Mono.
 
-### Motion system (pure CSS — preserves the zero-JS rule)
+### Surface — stays flat (no elevation)
 
-All motion is CSS-only and **`prefers-reduced-motion` guarded**. Shared utilities live
-in `global.css`:
+The surface language is **flat editorial** and stays that way. Depth is **not** a
+tool here:
+
+- **No** gradients, glows, blooms, drop shadows, or raised / elevated cards.
+- Structure comes from **hairline borders** (`--color-rule`), generous whitespace,
+  and type hierarchy — never from shadow or glow.
+- Premium feel is earned through **precision, restraint, and motion** (below), not
+  surface treatment.
+
+### Data-diagram system (the primary "futuristic" device)
+
+"Futuristic" is expressed through **precise, animated data diagrams**, not surface
+effects. House style for every diagram (hero lineage, contact build-graph, and any
+new ones):
+
+- **Flat schematic:** thin **white / cream** strokes (`--color-ink` /
+  `--color-ink-soft`) on `--color-paper`, mono (`--font-mono`) labels, an optional
+  faint grid, generous whitespace.
+- **Gold appears once** — as the single live signal (e.g. one travelling pulse),
+  never as a structural colour.
+- **Motion is CSS-only:** a load-time **draw-in** (`stroke-dashoffset`) plus a
+  looping **pulse** (`offset-path` / dash-flow), always `prefers-reduced-motion`
+  guarded and limited to transform / opacity / stroke.
+- One diagram illustrates **one point** (lineage, schema-drift, latency,
+  ownership). Keep it sparse — clutter reads as cheap.
+
+Reusable diagram components live in `src/components/diagrams/` — each is a
+self-contained SVG with a scoped `<style>` (draw-in on scroll via
+`animation-timeline: view()` inside a `@supports` + reduced-motion guard, plus a
+single looping gold pulse). Current set:
+
+| Component | Illustrates | Placed on |
+|---|---|---|
+| `FoundationStack.astro` | Model rests on owned·governed·trusted·fast inputs | `/value` — "The foundation" |
+| `SchemaContract.astro` | Upstream drift absorbed at the contract; downstream stays stable | `/dna` — operating principles |
+| `EngagementArc.astro` | Build → harden → handover; ownership transfers to the client | `/dna` — engagement process |
+| `WarehouseLayers.astro` | Layered transformation (staging→int→mart) + compute isolation | `/expertise` — capability 01 card |
+| `VaultModel.astro` | Data Vault hub · link · satellite absorbing source change | `/expertise` — capability 02 card |
+| `LineageTrace.astro` | Column-level lineage source→dashboard with a quality gate | `/expertise` — capability 03 card |
+
+The `/expertise` index maps a small card-scale diagram to each capability by
+`capIndex` (`01`/`02`/`03`).
+
+The home hero lineage graph is inlined in `src/pages/index.astro` (not yet a
+component). The `/contact` build-graph still uses the older gold-heavy treatment
++ `.depth-bloom` and is pending a white-forward rework.
+
+### Motion system (CSS-first — static baseline preserved)
+
+All **baseline** motion is CSS-only and **`prefers-reduced-motion` guarded**.
+Optional JS-driven motion is permitted *only* under the §1 JavaScript policy
+(≤ 6 KB budget, reduced-motion guard, pointer-gating, transform/opacity-only at
+60fps — never animating layout properties). Shared CSS utilities live in
+`global.css`:
 
 - `.reveal` / `.reveal-group` — scroll-reveal (fade + rise) via CSS scroll-driven
   animations (`animation-timeline: view()`). The hidden initial state sits **only** inside

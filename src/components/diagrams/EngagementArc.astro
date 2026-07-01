@@ -1,0 +1,112 @@
+---
+/**
+ * EngagementArc — "Proof first. Then production. Then it's yours."
+ * A three-phase track (Build → Harden → Handover) with an ownership bar
+ * that transfers from Tecnofin to the client team across the arc.
+ * Single gold signal travels the track left → right.
+ */
+const phases = [
+  { x: 70,  step: '01', label: 'BUILD' },
+  { x: 230, step: '02', label: 'HARDEN' },
+  { x: 390, step: '03', label: 'HANDOVER' },
+];
+---
+
+<figure class="ea-fig relative w-full">
+  <svg viewBox="0 0 460 200" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <pattern id="ea-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2E2922" stroke-width="0.5" opacity="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="460" height="200" fill="url(#ea-grid)" />
+
+    <!-- Track -->
+    <g class="ea-edges" fill="none" stroke="#F5EFE3" stroke-width="1" opacity="0.4">
+      <path d="M 70 70 L 390 70" />
+    </g>
+
+    <!-- Phase nodes -->
+    <g class="ea-nodes" font-family="JetBrains Mono, monospace">
+      {phases.map((p) => (
+        <g class="ea-node">
+          <circle cx={p.x} cy="70" r="7" fill="#0D0B09" stroke="#F5EFE3" stroke-width="1.25"/>
+          <text x={p.x} y="46" text-anchor="middle" font-size="8" fill="#D4A84B" letter-spacing="1">{p.step}</text>
+          <text x={p.x} y="98" text-anchor="middle" font-size="9" fill="#D8CFC0" letter-spacing="1.5">{p.label}</text>
+        </g>
+      ))}
+    </g>
+
+    <!-- Ownership bar: who runs the system across the arc -->
+    <g class="ea-ownership">
+      <text x="70" y="128" font-family="JetBrains Mono, monospace" font-size="7" fill="#7A6A5A" letter-spacing="1.5">OWNERSHIP</text>
+      <rect x="70" y="136" width="320" height="14" fill="#161310" stroke="#F5EFE3" stroke-width="0.75" opacity="0.9"/>
+      <!-- client share grows toward handover -->
+      <rect class="ea-fill" x="70" y="136" width="320" height="14" fill="#F5EFE3" opacity="0.14"/>
+      <line x1="70" y1="136" x2="70" y2="150" stroke="#F5EFE3" stroke-width="0.75" opacity="0.4"/>
+      <text x="78" y="146" font-family="JetBrains Mono, monospace" font-size="7" fill="#9A8A78">TECNOFIN</text>
+      <text x="382" y="146" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="7" fill="#F5EFE3">YOUR TEAM</text>
+    </g>
+
+    <!-- Legend -->
+    <g font-family="JetBrains Mono, monospace" font-size="7" fill="#7A6A5A" letter-spacing="1.2">
+      <text x="70" y="184">FIG. 04 — ENGAGEMENT ARC · PROOF → PRODUCTION → OWNERSHIP</text>
+    </g>
+
+    <!-- Single live signal: progress travelling the track -->
+    <circle class="ea-pulse" r="3" cx="0" cy="0" fill="#D4A84B" />
+  </svg>
+</figure>
+
+<style>
+  .ea-pulse {
+    offset-path: path('M 70 70 L 390 70');
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .ea-edges path {
+        stroke-dasharray: 340;
+        stroke-dashoffset: 340;
+        animation: ea-draw linear forwards;
+        animation-timeline: view();
+        animation-range: entry 6% cover 36%;
+      }
+      .ea-node {
+        opacity: 0;
+        transform: scale(0.7);
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: ea-pop linear both;
+        animation-timeline: view();
+      }
+      .ea-nodes > .ea-node:nth-child(1) { animation-range: entry 8%  cover 30%; }
+      .ea-nodes > .ea-node:nth-child(2) { animation-range: entry 14% cover 36%; }
+      .ea-nodes > .ea-node:nth-child(3) { animation-range: entry 20% cover 42%; }
+      .ea-fill {
+        transform-box: view-box;
+        transform-origin: 70px 143px;
+        transform: scaleX(0.08);
+        animation: ea-handover linear both;
+        animation-timeline: view();
+        animation-range: entry 16% cover 50%;
+      }
+    }
+
+    .ea-pulse {
+      animation: ea-pulse-travel 3.6s cubic-bezier(0.5, 0, 0.4, 1) infinite;
+      animation-delay: 0.7s;
+    }
+  }
+
+  @keyframes ea-draw { to { stroke-dashoffset: 0; } }
+  @keyframes ea-pop { to { opacity: 1; transform: none; } }
+  @keyframes ea-handover { to { transform: scaleX(1); } }
+  @keyframes ea-pulse-travel {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    8%   { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+</style>

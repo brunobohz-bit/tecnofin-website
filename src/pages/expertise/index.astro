@@ -6,8 +6,19 @@ const pageContent = await getEntry('pages', 'expertise');
 if (!pageContent) throw new Error("Unable to locate expertise.md in content layer.");
 const { Content } = await render(pageContent);
 
+import WarehouseLayers from '../../components/diagrams/WarehouseLayers.astro';
+import VaultModel from '../../components/diagrams/VaultModel.astro';
+import LineageTrace from '../../components/diagrams/LineageTrace.astro';
+
 const capabilities = (await getCollection('expertise'))
   .sort((a, b) => a.data.order - b.data.order);
+
+// One small schematic per capability, keyed by capIndex.
+const DIAGRAMS: Record<string, any> = {
+  '01': WarehouseLayers,
+  '02': VaultModel,
+  '03': LineageTrace,
+};
 ---
 
 <BaseLayout title={pageContent.data.title} description={pageContent.data.description}>
@@ -33,7 +44,9 @@ const capabilities = (await getCollection('expertise'))
 
   <!-- Capability Cards -->
   <section class="max-w-6xl mx-auto px-6">
-    {capabilities.map((cap) => (
+    {capabilities.map((cap) => {
+      const Diagram = DIAGRAMS[cap.data.capIndex];
+      return (
       <a
         href={`/expertise/${cap.id}`}
         class="reveal group block border-b border-rule py-14 grid grid-cols-1 md:grid-cols-12 gap-8 hover:bg-paper-warm transition-colors -mx-6 px-6"
@@ -60,14 +73,20 @@ const capabilities = (await getCollection('expertise'))
           </div>
         </div>
 
-        <!-- Arrow CTA -->
-        <div class="md:col-span-4 flex md:items-start md:justify-end pt-1">
+        <!-- Per-capability schematic + CTA -->
+        <div class="md:col-span-4 flex flex-col gap-5 md:items-end">
+          {Diagram && (
+            <div class="w-full max-w-[260px] md:ml-auto">
+              <Diagram />
+            </div>
+          )}
           <span class="eyebrow group-hover:text-oxblood transition-colors inline-flex items-center gap-2">
             View capability
             <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
           </span>
         </div>
       </a>
-    ))}
+      );
+    })}
   </section>
 </BaseLayout>

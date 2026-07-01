@@ -1,0 +1,128 @@
+---
+/**
+ * SchemaContract — "Sources drift. We absorb that drift in the model so
+ * downstream consumers never see a broken interface."
+ * A drifting source row hits the contract membrane and is absorbed;
+ * the consumer interface stays steady. Single gold signal = the drift.
+ */
+const sourceRows = [
+  { y: 70,  drift: false },
+  { y: 96,  drift: true  },
+  { y: 122, drift: false },
+  { y: 148, drift: false },
+];
+const consumerRows = [82, 108, 134];
+---
+
+<figure class="sc-fig relative w-full">
+  <svg viewBox="0 0 460 240" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <pattern id="sc-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2E2922" stroke-width="0.5" opacity="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="460" height="240" fill="url(#sc-grid)" />
+
+    <!-- Source block (drifting) -->
+    <g class="sc-block">
+      <rect x="24" y="52" width="120" height="120" fill="#161310" stroke="#F5EFE3" stroke-width="0.75" opacity="0.92"/>
+      <text x="30" y="44" font-family="JetBrains Mono, monospace" font-size="8" fill="#9A8A78" letter-spacing="1.5">SOURCE · UPSTREAM</text>
+      {sourceRows.map((r) => (
+        <line
+          x1="38" y1={r.y} x2={r.drift ? 118 : 130} y2={r.y}
+          stroke={r.drift ? '#D4A84B' : '#D8CFC0'}
+          stroke-width={r.drift ? 1.5 : 1}
+          stroke-dasharray={r.drift ? '4 3' : '0'}
+          class={r.drift ? 'sc-driftrow' : ''}
+          opacity="0.85"
+        />
+      ))}
+    </g>
+
+    <!-- Contract membrane -->
+    <g class="sc-membrane">
+      <line x1="230" y1="36" x2="230" y2="200" stroke="#F5EFE3" stroke-width="1.25" opacity="0.55"/>
+      <rect x="214" y="98" width="32" height="44" fill="#0D0B09" stroke="#F5EFE3" stroke-width="1"/>
+      <text x="230" y="124" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#F5EFE3">⌗</text>
+      <text x="230" y="220" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#D8CFC0" letter-spacing="1.5">SCHEMA CONTRACT</text>
+    </g>
+
+    <!-- Edges: source → membrane -->
+    <g class="sc-edges" fill="none" stroke="#F5EFE3" stroke-width="1" opacity="0.3">
+      <path d="M 144 112 C 185 112, 185 120, 214 120" />
+    </g>
+
+    <!-- Stable interface: membrane → consumer -->
+    <g class="sc-edges" fill="none" stroke="#F5EFE3" stroke-width="1" opacity="0.3">
+      <path d="M 246 120 C 290 120, 290 108, 320 108" />
+    </g>
+
+    <!-- Consumer block (steady) -->
+    <g class="sc-block">
+      <rect x="320" y="72" width="116" height="76" fill="#161310" stroke="#F5EFE3" stroke-width="0.75" opacity="0.92"/>
+      <text x="320" y="64" font-family="JetBrains Mono, monospace" font-size="8" fill="#9A8A78" letter-spacing="1.5">DOWNSTREAM · STABLE</text>
+      {consumerRows.map((y) => (
+        <line x1="334" y1={y} x2="422" y2={y} stroke="#D8CFC0" stroke-width="1" opacity="0.85"/>
+      ))}
+    </g>
+
+    <!-- Legend -->
+    <g font-family="JetBrains Mono, monospace" font-size="7" fill="#7A6A5A" letter-spacing="1.2">
+      <text x="24" y="234">FIG. 03 — DRIFT ABSORBED AT THE CONTRACT</text>
+    </g>
+
+    <!-- Single live signal: drift travels to membrane, then is absorbed -->
+    <circle class="sc-pulse" r="3" cx="0" cy="0" fill="#D4A84B" />
+  </svg>
+</figure>
+
+<style>
+  .sc-pulse {
+    offset-path: path('M 118 96 C 185 96, 185 120, 226 120');
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .sc-edges path {
+        stroke-dasharray: 120;
+        stroke-dashoffset: 120;
+        animation: sc-draw linear forwards;
+        animation-timeline: view();
+        animation-range: entry 10% cover 36%;
+      }
+      .sc-block, .sc-membrane {
+        opacity: 0;
+        transform: translateY(0.7rem);
+        animation: sc-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 4% cover 30%;
+      }
+      .sc-membrane { animation-range: entry 12% cover 38%; }
+    }
+
+    /* The drifting source row flickers — the one thing changing upstream */
+    .sc-driftrow {
+      animation: sc-drift 2.6s ease-in-out infinite;
+    }
+
+    /* Live signal: drift hits the membrane and dissolves (never reaches consumer) */
+    .sc-pulse {
+      animation: sc-pulse-travel 3s cubic-bezier(0.55, 0, 0.3, 1) infinite;
+      animation-delay: 0.4s;
+    }
+  }
+
+  @keyframes sc-draw { to { stroke-dashoffset: 0; } }
+  @keyframes sc-rise { to { opacity: 1; transform: none; } }
+  @keyframes sc-drift {
+    0%, 100% { transform: translateX(0); opacity: 0.85; }
+    50%      { transform: translateX(6px); opacity: 1; }
+  }
+  @keyframes sc-pulse-travel {
+    0%   { offset-distance: 0%;  opacity: 0; }
+    12%  { opacity: 1; }
+    78%  { offset-distance: 92%; opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+</style>

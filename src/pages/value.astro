@@ -2,6 +2,7 @@
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { VALUE_OUTCOMES, BEFORE_AFTER, STAKEHOLDERS } from '../config/site';
+import FoundationStack from '../components/diagrams/FoundationStack.astro';
 
 const page = await getEntry('pages', 'value');
 if (!page) throw new Error('Unable to locate value.md in content layer.');
@@ -42,22 +43,23 @@ const { Content } = await render(page);
 
   <!-- THE FOUNDATION — bridge from data infrastructure to AI-ready -->
   <section class="border-b border-rule bg-paper-deep/30">
-    <div class="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-      <div class="md:col-span-4">
+    <div class="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      <div class="md:col-span-7">
         <span class="eyebrow-oxblood">§ The foundation</span>
         <h2 class="display text-4xl md:text-5xl mt-4 leading-[1.05]">
           No model outperforms its inputs.
         </h2>
         <span class="rule-oxblood mt-6"></span>
-      </div>
-      <div class="md:col-span-8">
-        <p class="font-serif text-ink-soft text-[1.0625rem] leading-relaxed max-w-2xl">
+        <p class="mt-8 font-serif text-ink-soft text-[1.0625rem] leading-relaxed max-w-xl">
           An AI strategy is only as good as the data underneath it. Point a model at slow,
           untraceable, half-broken pipelines and it will produce confident nonsense at scale.
           Our work is the unglamorous part that makes the glamorous part possible: turning the
           data that makes you unique into a foundation that is fast, trusted, governed, and
           owned — so everything you build on top of it can be trusted too.
         </p>
+      </div>
+      <div class="md:col-span-5">
+        <FoundationStack />
       </div>
     </div>
   </section>

@@ -1,0 +1,87 @@
+---
+/**
+ * VaultModel (cap 02) — Data Vault 2.0 hub · link · satellite.
+ * Hubs joined by a link, satellites holding history off the hub; a single gold
+ * signal traces a source change being absorbed into a satellite (no breakage).
+ */
+---
+
+<figure class="vm-fig w-full" aria-hidden="true">
+  <svg viewBox="0 0 220 130" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+    <!-- Connectors -->
+    <g class="vm-edges" fill="none" stroke="#F5EFE3" stroke-width="0.9" opacity="0.38">
+      <path d="M 50 50 L 50 30" />        <!-- hub1 → sat top -->
+      <path d="M 50 66 L 50 88" />        <!-- hub1 → sat bottom -->
+      <path d="M 70 58 L 100 58" />       <!-- hub1 → link -->
+      <path d="M 128 58 L 158 58" />      <!-- link → hub2 -->
+      <path d="M 178 50 L 178 30" />      <!-- hub2 → sat top -->
+    </g>
+
+    <!-- Hub 1 -->
+    <g class="vm-node">
+      <rect x="32" y="46" width="38" height="24" fill="#0D0B09" stroke="#F5EFE3" stroke-width="1"/>
+      <text x="51" y="61" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#F5EFE3">HUB</text>
+    </g>
+    <!-- Satellites on hub 1 -->
+    <g class="vm-node">
+      <rect x="28" y="10" width="46" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+      <text x="51" y="23" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#D8CFC0">SAT · HIST</text>
+    </g>
+    <g class="vm-node">
+      <rect x="28" y="88" width="46" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+      <text x="51" y="101" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#D8CFC0">SAT · ATTR</text>
+    </g>
+
+    <!-- Link -->
+    <g class="vm-node">
+      <rect x="100" y="48" width="28" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+      <text x="114" y="61" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#9A8A78">LINK</text>
+    </g>
+
+    <!-- Hub 2 -->
+    <g class="vm-node">
+      <rect x="159" y="46" width="38" height="24" fill="#0D0B09" stroke="#F5EFE3" stroke-width="1"/>
+      <text x="178" y="61" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="#F5EFE3">HUB</text>
+    </g>
+    <g class="vm-node">
+      <rect x="155" y="10" width="46" height="20" fill="#161310" stroke="#F5EFE3" stroke-width="0.75"/>
+      <text x="178" y="23" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#D8CFC0">SAT · HIST</text>
+    </g>
+
+    <g font-family="JetBrains Mono, monospace" font-size="6" fill="#7A6A5A" letter-spacing="1">
+      <text x="28" y="124">FIG. 02A — HUB · LINK · SATELLITE</text>
+    </g>
+
+    <!-- Live signal: change absorbed into a satellite -->
+    <circle class="vm-pulse" r="2.4" cx="0" cy="0" fill="#D4A84B" />
+  </svg>
+</figure>
+
+<style>
+  .vm-pulse { offset-path: path('M 50 58 L 50 96'); opacity: 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .vm-edges path {
+        stroke-dasharray: 40; stroke-dashoffset: 40;
+        animation: vm-draw linear forwards; animation-timeline: view();
+        animation-range: entry 6% cover 32%;
+      }
+      .vm-node {
+        opacity: 0; transform: scale(0.82);
+        transform-box: fill-box; transform-origin: center;
+        animation: vm-pop linear both; animation-timeline: view();
+        animation-range: entry 4% cover 30%;
+      }
+    }
+    .vm-pulse { animation: vm-travel 3.4s cubic-bezier(0.5,0,0.4,1) infinite; animation-delay: 0.6s; }
+  }
+
+  @keyframes vm-draw { to { stroke-dashoffset: 0; } }
+  @keyframes vm-pop { to { opacity: 1; transform: none; } }
+  @keyframes vm-travel {
+    0% { offset-distance: 0%; opacity: 0; }
+    14% { opacity: 1; } 80% { offset-distance: 92%; opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+</style>
